@@ -178,8 +178,8 @@ Clone the Repository:
 
 bash
 Copy code
-git clone https://github.com/your-username/virustotal-scanner.git
-cd virustotal-scanner
+git clone https://github.com/madrasa7/VTScan.git
+cd VTScan
 Install Dependencies:
 
 bash
