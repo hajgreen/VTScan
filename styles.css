@@ -150,6 +150,25 @@ body {
   background-color: #ededed;
 }
 
+.upload-progress {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.upload-progress progress {
+  height: 40px;
+  width: 100%;
+}
+
+.message-upload {
+  color: rgb(22, 166, 22);
+  font-size: 18px;
+  font-weight: 700;
+}
+
 /* Responsive design for tablets and phones */
 @media (max-width: 768px) {
   #av-results {

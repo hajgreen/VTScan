@@ -164,7 +164,7 @@ async function handleFile(file) {
 	fileSection.innerHTML += `<p><strong>File Hash (SHA-1):</strong> ${hash}</p>`;
 
 	// بررسی هش در VirusTotal
-	await checkFileHash(hash, fileName, fileSection);
+	await checkFileHash(hash, fileName, fileSection, file);
 }
 
 function calculateHash(fileData) {
@@ -183,7 +183,57 @@ function ShowLoading(bool) {
 	}
 }
 
-async function checkFileHash(hash, fileName, fileSection) {
+async function uploadFile(file, fileSection) {
+	const apiKey = await getApiKey();
+	const url = "https://www.virustotal.com/api/v3/files";
+	const fileName = file.name;
+
+	// نمایش نوار پیشرفت
+	const progressBar = document.getElementById('progressBar-' + fileName);
+	const progressPercentage = document.getElementById('progressPercentage-' + fileName);
+	const uploadProgress = document.getElementById('uploadProgress-' + fileName);
+	const uploadBtn = document.getElementById("uploadBtn-" + fileName);
+	uploadBtn.remove();
+	uploadProgress.style.display = 'flex';
+
+	const formData = new FormData();
+	formData.append('file', file);
+
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', url, true);
+	xhr.setRequestHeader('x-apikey', apiKey);
+
+	// رویداد برای نظارت بر پیشرفت آپلود
+	xhr.upload.onprogress = function (event) {
+		if (event.lengthComputable) {
+			const percentComplete = Math.round((event.loaded / event.total) * 100);
+			progressBar.value = percentComplete;
+
+			if (percentComplete == 100) {
+				const message = document.getElementById(`messageProgessBar-${fileName}`);
+				message.innerText = "Upload successful!";
+				message.classList.add("message-upload")
+			}
+
+			progressPercentage.textContent = percentComplete + '%';
+		}
+	};
+
+	// رویداد زمانی که آپلود کامل شد
+	xhr.onload = function () {
+		if (xhr.status === 200) {
+
+		}
+		else {
+			fileSection.innerHTML += `<p>Error uploading file: ${xhr.statusText}</p>`;
+		}
+	};
+
+	// ارسال درخواست
+	xhr.send(formData);
+}
+
+async function checkFileHash(hash, fileName, fileSection, file = undefined) {
 
 	ShowLoading(true);
 
@@ -205,6 +255,33 @@ async function checkFileHash(hash, fileName, fileSection) {
 		}
 		else if (response.status === 404) {
 			fileSection.innerHTML += `<p>File with hash ${hash} not found in VirusTotal database.</p>`;
+
+			// ایجاد دکمه آپلود
+			if (file.size <= 32 * 1024 * 1024 && file) {
+				const uploadButton = document.createElement('button');
+				uploadButton.id = "uploadBtn-" + fileName;
+				uploadButton.classList.add('btn');
+				uploadButton.classList.add('btn-primary');
+				uploadButton.textContent = 'Upload to VirusTotal';
+				uploadButton.onclick = () => { uploadFile(file, apiKey, fileSection); this.disabled = true; }
+				fileSection.appendChild(uploadButton);
+
+				// ساختن نوار پیشرفت
+				const uploadProgress = document.createElement('div');
+				uploadProgress.id = 'uploadProgress-' + fileName;
+				uploadProgress.style.display = 'none';
+				uploadProgress.classList.add("upload-progress");
+				uploadProgress.innerHTML = `
+											<span id="progressPercentage-${fileName}">0%</span>
+											<progress id="progressBar-${fileName}" value="0" max="100"></progress>
+											<span id="messageProgessBar-${fileName}"></span>
+										`;
+				fileSection.appendChild(uploadProgress);
+
+			}
+			else {
+				fileSection.innerHTML += `<p>File is larger than 32MB and cannot be uploaded.</p>`;
+			}
 		}
 		else {
 			const errorDetails = await response.json();
