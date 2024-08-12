@@ -1,6 +1,7 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const { api_keys } = require('./data/vt_api_keys.json');
+const { version } = require('./package.json');
 
 require('dotenv').config();
 
@@ -34,7 +35,7 @@ app.whenReady().then(() => {
 
 	// Context Menu
 	ipcMain.on('show-context-menu', (event) => {
-		const template = [
+		var template = [
 			{
 				label: 'Scan Files',
 				click: () => { event.sender.send('context-menu-command', 'scan-file'); }
@@ -44,10 +45,47 @@ app.whenReady().then(() => {
 				click: () => { event.sender.send('context-menu-command', 'scan-folder'); }
 			},
 			{
-				label: "Dev Tools",
-				role: 'toggleDevTools'
+				role: 'reload'
+			},
+			{
+				label: 'View',
+				submenu: [
+					{ role: 'forceReload' },
+					{ role: 'toggleDevTools' },
+					{ type: 'separator' },
+					{ role: 'resetZoom' },
+					{ role: 'zoomIn' },
+					{ role: 'zoomOut' },
+					{ type: 'separator' },
+					{ role: 'togglefullscreen' }
+				]
+			},
+			{
+				label: 'About',
+				click: () => {
+					dialog.showMessageBox({
+						type: 'info',
+						title: 'About',
+						message: `VTScan free VirusTotal scanner multi platform. \n\nDeveloper: Mohammad Rasabakhsh\n\nhttps://github.com/madrasa7/VTScan/\n\nVersion: ${version}`,
+						buttons: ['OK']
+					});
+				}
+			},
+			{
+				label: 'Exit',
+				role: 'close'
 			}
 		];
+
+		if (process.env.IS_ADMIN && process.env.IS_ADMIN == "true") {
+			template.push(
+				{
+					label: "Dev Tools",
+					role: 'toggleDevTools'
+				}
+			);
+		}
+
 		const menu = Menu.buildFromTemplate(template);
 		menu.popup(BrowserWindow.fromWebContents(event.sender));
 	});

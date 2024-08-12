@@ -10,6 +10,8 @@ const crypto = require('crypto');
 const path = require('path');
 const { ipcRenderer } = require('electron');
 
+var filesLength = 0;
+var fileCounter = 1;
 
 //Get Api Key
 var apiCounter = -1;
@@ -19,11 +21,10 @@ async function getApiKey() {
 
 	if (api.length != apiCounter + 1) {
 		apiCounter += 1;
-	} else {
+	}
+	else {
 		apiCounter = 0;
 	}
-
-	console.log(api[apiCounter]);
 
 	return api[apiCounter];
 }
@@ -84,6 +85,12 @@ fileSelectButton.addEventListener('click', () => {
 	fileInput.click();
 });
 
+// Event listener برای انتخاب پوشه از طریق دکمه
+folderSelectButton.addEventListener('click', () => {
+	resultsContainer.innerHTML = "";
+	folderInput.click();
+});
+
 fileInput.addEventListener('change', async (event) => {
 	const files = event.target.files;
 	if (files.length > 0) {
@@ -91,20 +98,11 @@ fileInput.addEventListener('change', async (event) => {
 	}
 });
 
-// Event listener برای انتخاب پوشه از طریق دکمه
-folderSelectButton.addEventListener('click', () => {
-	resultsContainer.innerHTML = "";
-	folderInput.click();
-});
-
-var filesLength = 0;
-var fileCounter = 0;
-
 folderInput.addEventListener('change', async (event) => {
 	const files = event.target.files;
 	const executableExtensions = ['.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.gadget', '.msc', '.pif', '.reg', '.inf', '.jar', '.py'];
 
-	fileCounter = 2;
+	fileCounter = 1;
 
 	let counter = 0;
 	for (let file of files) {
@@ -132,7 +130,7 @@ folderInput.addEventListener('change', async (event) => {
 async function handleMultipleFiles(files) {
 	ShowLoading(true);
 
-	fileCounter = 1;
+	fileCounter = 0;
 	filesLength = files.length;
 
 	resultsContainer.innerHTML = "";
@@ -218,11 +216,12 @@ async function checkFileHash(hash, fileName, fileSection) {
 }
 
 function displayResults(attributes, fileName, fileSection) {
+
 	const { last_analysis_stats, last_analysis_results } = attributes;
 	const totalAVs = last_analysis_stats.harmless + last_analysis_stats.malicious + last_analysis_stats.suspicious + last_analysis_stats.undetected + last_analysis_stats.timeout;
 	const maliciousAVs = last_analysis_stats.malicious;
 
-	loadingStep.innerHTML = `${fileCounter} of ${filesLength} done`;
+	loadingStep.innerHTML = `${fileCounter} of ${filesLength}`;
 
 	fileSection.innerHTML += `<p><strong>File Name: </strong> ${fileName}</p>`;
 
@@ -249,23 +248,33 @@ function displayResults(attributes, fileName, fileSection) {
                 <div class="accordion-body row">
     `;
 
+	// مرتب کردن نتایج بر اساس اولویت: ویروسی‌ها در ابتدا نمایش داده می‌شوند
+	const sortedResults = Object.keys(last_analysis_results).sort((a, b) => {
+		const categoryA = last_analysis_results[a].category;
+		const categoryB = last_analysis_results[b].category;
+
+		if (categoryA === 'malicious' && categoryB !== 'malicious') return -1;
+		if (categoryA !== 'malicious' && categoryB === 'malicious') return 1;
+		return 0;
+	});
+
 	// اضافه کردن نتایج دقیق به آکاردیون
-	Object.keys(last_analysis_results).forEach((engine) => {
+	sortedResults.forEach((engine) => {
 
 		const result = last_analysis_results[engine];
 		const statusClass = result.category === 'undetected' ? 'status-clean' :
 			result.category === 'malicious' ? 'status-malicious' : 'status-unknown';
 
 		accordionContent += `
-            <div class="col-lg-4 main-card">
-                <div class="card">
-					<div class="d-flex justify-content-between align-items-center">
-						<span style="font-weight: 600;">${engine}</span>
-						<span class="status ${statusClass}">${result.result || result.category}</span>
-					</div>
+        <div class="col-lg-4 main-card">
+            <div class="card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span style="font-weight: 600;">${engine}</span>
+                    <span class="status ${statusClass}">${result.result || result.category}</span>
                 </div>
             </div>
-        `;
+        </div>
+    `;
 	});
 
 	// پایان آکاردیون
