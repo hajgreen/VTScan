@@ -145,9 +145,10 @@ Configure the API Key:
 
 Create a .env file in the root directory and add your VirusTotal API key:
 
-```bash
+
 Copy code
-VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
+   ```bash
+   VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
 Usage
 Start the Application:
 
