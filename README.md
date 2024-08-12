@@ -138,15 +138,16 @@ Install Dependencies:
 
 Run the following command to install all the necessary dependencies:
 
-bash
 Copy code
+```bash
 npm install
-Configure the API Key:
+```
+## Configure the API Key:
 
-Create a .env file in the root directory and add your VirusTotal API key:
+# Create a .env file in the root directory and add your VirusTotal API key:
 
 
-Copy code
+# Copy code to .env file
    ```bash
    VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
    ```
