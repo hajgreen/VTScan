@@ -68,8 +68,6 @@ dropArea.addEventListener('drop', async (event) => {
 
 	if (files.length > 0) {
 
-		console.log(files);
-
 		if (files[0].type != "application/octet-stream" && files[0].type != "") {
 			await handleMultipleFiles(files);
 		}
@@ -81,12 +79,14 @@ dropArea.addEventListener('drop', async (event) => {
 
 // Event listener برای انتخاب فایل از طریق دکمه
 fileSelectButton.addEventListener('click', () => {
+	fileInput.value = null;
 	resultsContainer.innerHTML = "";
 	fileInput.click();
 });
 
 // Event listener برای انتخاب پوشه از طریق دکمه
 folderSelectButton.addEventListener('click', () => {
+	folderInput.value = null;
 	resultsContainer.innerHTML = "";
 	folderInput.click();
 });
@@ -114,7 +114,6 @@ folderInput.addEventListener('change', async (event) => {
 
 	filesLength = counter;
 
-	resultsContainer.innerHTML = "";
 	resultsContainer.innerHTML += `<h4 style="margin-bottom: 20px;"><strong>Files count: ${counter} </strong></h4>`;
 
 	for (let file of files) {
@@ -133,7 +132,6 @@ async function handleMultipleFiles(files) {
 	fileCounter = 0;
 	filesLength = files.length;
 
-	resultsContainer.innerHTML = "";
 	resultsContainer.innerHTML += `<h4 style="margin-bottom: 20px;"><strong>Files count: ${files.length} </strong></h4>`;
 
 	for (let file of files) {
