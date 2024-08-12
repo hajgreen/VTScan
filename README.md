@@ -3,8 +3,10 @@
 VTScan (Virus Total Scan) is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
 
 ## Features
-
+- **Speeedup and Lightweight**: The main focus of VTScan is on speed and optimization. The speed of this software is faster than the virustotal site.
+- **Beautiful and modern design**: Simple and beautiful design and user interface that is implemented in the best way with the help of bootstrap.
 - **Drag and Drop Interface**: Easily drag and drop files or select files and folders for scanning.
+- **Folder Scan**: Select the folder and scan all files with executable extension.
 - **Real-Time Scanning**: Scan files using the VirusTotal API and get instant results.
 - **Cross-Platform**: Works on Windows, macOS, and Linux.
 
