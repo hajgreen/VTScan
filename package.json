@@ -4,7 +4,7 @@
   "description": "VTScan VirusTotal scan files",
   "keywords": [],
   "main": "./main.js",
-  "version": "1.0.1",
+  "version": "1.3.0",
   "author": "madr",
   "scripts": {
     "start": "electron ."
