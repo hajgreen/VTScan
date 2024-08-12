@@ -10,10 +10,9 @@ VTScan (Virus Total Scan) is an Electron-based application that allows users to 
 
 ## Requirements
 
-- Node.js (v12.x or higher)
+- Node.js (v16.x or higher)
 - npm or yarn
-- Electron (v11.x or higher)
-- A VirusTotal API key
+- Electron (v12.x or higher)
 
 ### Key Sections Explanation
 
@@ -28,15 +27,14 @@ VTScan (Virus Total Scan) is an Electron-based application that allows users to 
 9. **License**: Information about the licensing of the project.
 10. **Acknowledgements**: Credits the tools and services used in the project.
 
-This `README.md` file should give users a clear understanding of how to set up and use your VirusTotal Scanner application, as well as provide developers with the information they need to contribute to or modify the project.
-همه اینارو تبدیل به یک README.md بکن تحویل بده
-ChatGPT
-Here is the complete README.md file based on the information provided:
+## Intsall execute installer
 
-markdown
-Copy code
+1. download installer from releases project
 
-## Installation
+2. install program
+ 
+
+## Install Source Code
 
 1. **Clone the Repository**:
 
