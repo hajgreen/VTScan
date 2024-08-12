@@ -8,6 +8,10 @@ const crypto = require('crypto');
 const path = require('path');
 const { ipcRenderer } = require('electron');
 
+//Get Api Key
+async function getApiKey() {
+	return await ipcRenderer.invoke('get-api-key');
+}
 
 //MenuBar and Context Menu
 window.addEventListener('contextmenu', (e) => {
@@ -150,7 +154,7 @@ async function checkFileHash(hash, fileName, fileSection) {
 
 	ShowLoading(true);
 
-	const apiKey = '5091c939d83c3709cb9097665055143abd20b61d31cc361a94d92d57719a74d1';
+	const apiKey = await getApiKey();;
 	const url = "https://www.virustotal.com/api/v3/files/" + hash;
 
 	try {

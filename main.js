@@ -1,6 +1,8 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
+require('dotenv').config();
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 1024,
@@ -50,6 +52,9 @@ app.whenReady().then(() => {
   });
 });
 
+ipcMain.handle('get-api-key', () => {
+  return process.env.VIRUSTOTAL_API_KEY;
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
