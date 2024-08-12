@@ -33,7 +33,7 @@ app.whenReady().then(() => {
   ipcMain.on('show-context-menu', (event) => {
     const template = [
       {
-        label: 'Scan File',
+        label: 'Scan Files',
         click: () => { event.sender.send('context-menu-command', 'scan-file'); }
       },
       {
