@@ -15,81 +15,6 @@ VirusTotal Scanner is an Electron-based application that allows users to scan fi
 - Electron (v11.x or higher)
 - A VirusTotal API key
 
-## Installation
-
-1. **Clone the Repository**:
-
-   ```bash
-   git clone https://github.com/madrasa7/VTScan.git
-   cd VTScan
-Install Dependencies:
-
-Run the following command to install all the necessary dependencies:
-
-bash
-Copy code
-npm install
-Configure the API Key:
-
-Create a .env file in the root directory and add your VirusTotal API key:
-
-bash
-Copy code
-VTS_API_KEY=your_virustotal_api_key_here
-Usage
-Start the Application:
-
-To start the Electron application, run:
-
-bash
-Copy code
-npm start
-Scan Files:
-
-Drag and drop files into the application window or use the "Select File" or "Select Folder" buttons.
-The application will scan the files and display the results.
-Application Menu
-The application menu provides the following options:
-
-File: Allows you to quit the application.
-Edit: Standard edit options (Undo, Redo, Cut, Copy, Paste).
-View: Options to reload, toggle developer tools, and adjust zoom.
-Window: Window management options.
-Help: A link to learn more about Electron.
-Context Menu
-Right-click anywhere in the application to open a context menu that provides quick access to file and folder scanning options.
-
-Development
-If you want to contribute to this project or modify it for your own needs, follow these steps:
-
-Clone the Repository:
-
-bash
-Copy code
-git clone https://github.com/madrasa7/VTScan.git
-cd VTScan
-Install Dependencies:
-
-bash
-Copy code
-npm install
-Make Your Changes:
-
-Make any changes you want in the source code. The main logic resides in the main.js and renderer.js files.
-
-Run the Application:
-
-Use the npm start command to test your changes.
-
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-Acknowledgements
-Electron for providing the framework.
-VirusTotal for the scanning API.
-markdown
-Copy code
-
 ### Key Sections Explanation
 
 1. **Project Title and Description**: Provides an overview of what the application does.
@@ -136,18 +61,23 @@ VirusTotal Scanner is an Electron-based application that allows users to scan fi
    cd VTScan
 Install Dependencies:
 
+2. **Insatll dependencies**:
+
 Run the following command to install all the necessary dependencies:
 
-bash
-Copy code
+```bash
 npm install
-Configure the API Key:
+```
 
-Create a .env file in the root directory and add your VirusTotal API key:
+3. **Configure the API Key**:
 
-bash
-Copy code
-VTS_API_KEY=your_virustotal_api_key_here
+* Create a .env file in the root directory and add your VirusTotal API key:
+
+
+* Copy code to .env file
+   ```bash
+   VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
+   ```
 Usage
 Start the Application:
 
@@ -155,7 +85,9 @@ To start the Electron application, run:
 
 bash
 Copy code
-npm start
+   ```bash
+   npm start
+   ```
 Scan Files:
 
 Drag and drop files into the application window or use the "Select File" or "Select Folder" buttons.
