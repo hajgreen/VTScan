@@ -33,7 +33,7 @@ body {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 6px 10px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
@@ -42,7 +42,8 @@ body {
 
 #file-select-button:hover,
 #folder-select-button:hover {
-  background-color: #0056b3;
+  background-color: #0067d6;
+  transition: 0.3s ease;
 }
 
 #results {
@@ -95,7 +96,7 @@ body {
 }
 
 .status-unknown {
-  color: #ff9800;
+  color: #b5b5b5;
 }
 
 .main-card {
@@ -123,8 +124,8 @@ body {
   position: fixed;
   width: 100%;
   background-color: white;
-  opacity: 0.9;
   z-index: 99;
+  transition: 0.6s ease;
 }
 
 .spinner-border {
@@ -159,7 +160,7 @@ body {
 }
 
 .upload-progress progress {
-  height: 40px;
+  height: 20px;
   width: 100%;
 }
 
@@ -169,10 +170,38 @@ body {
   font-weight: 700;
 }
 
+.main-info {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10px;
+  margin-bottom: 42px;
+}
+
+.main-info p {
+  margin: 0 !important;
+}
+
+.file-section p {
+  margin-bottom: 10px;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin-top: 42px;
+}
+
 /* Responsive design for tablets and phones */
 @media (max-width: 768px) {
   #av-results {
     display: block;
+  }
+
+  .main-info {
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 10px;
   }
 
   .card {

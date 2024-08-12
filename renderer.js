@@ -64,8 +64,6 @@ dropArea.addEventListener('drop', async (event) => {
 	dropArea.style.background = '';
 
 	const files = event.dataTransfer.files;
-	resultsContainer.innerHTML += `<h4 style="margin-bottom: 20px;"><strong>Files count: ${files.length} </strong></h4>`;
-
 	if (files.length > 0) {
 
 		if (files[0].type != "application/octet-stream" && files[0].type != "") {
@@ -114,7 +112,12 @@ folderInput.addEventListener('change', async (event) => {
 
 	filesLength = counter;
 
-	resultsContainer.innerHTML += `<h4 style="margin-bottom: 20px;"><strong>Files count: ${counter} </strong></h4>`;
+	resultsContainer.innerHTML += `
+		<div class="result-header">
+			<h4>Result</h4>
+			<h5 style="margin-bottom: 20px;">Files count: ${files.length}</h5>
+		</div>
+	`;
 
 	for (let file of files) {
 		const ext = path.extname(file.name).toLowerCase();
@@ -132,7 +135,12 @@ async function handleMultipleFiles(files) {
 	fileCounter = 0;
 	filesLength = files.length;
 
-	resultsContainer.innerHTML += `<h4 style="margin-bottom: 20px;"><strong>Files count: ${files.length} </strong></h4>`;
+	resultsContainer.innerHTML += `
+		<div class="result-header">
+			<h4>Result</h4>
+			<h5 style="margin-bottom: 20px;">Files count: ${files.length}</h5>
+		</div>
+	`;
 
 	for (let file of files) {
 		fileCounter += 1;
@@ -159,7 +167,7 @@ async function handleFile(file) {
 	const hash = calculateHash(fileData);
 
 	// نمایش هش فایل
-	fileSection.innerHTML += `<p><strong>File Hash (SHA-1):</strong> ${hash}</p>`;
+	fileSection.innerHTML += `<p>File Hash (SHA-1): ${hash}</p>`;
 
 	// بررسی هش در VirusTotal
 	await checkFileHash(hash, fileName, fileSection, file);
@@ -173,11 +181,13 @@ function ShowLoading(bool) {
 
 	if (bool) {
 		document.body.style.overflowY = "hidden";
-		document.getElementById('loading').style.display = 'flex';
+		document.getElementById('loading').style.opacity = '0.9';
+		document.getElementById('loading').style.height = '100vh';
 	}
 	else {
 		document.body.style.overflowY = "auto";
-		document.getElementById('loading').style.display = 'none';
+		document.getElementById('loading').style.opacity = '0';
+		document.getElementById('loading').style.height = '0';
 	}
 }
 
@@ -190,9 +200,13 @@ async function uploadFile(file, fileSection) {
 	const progressBar = document.getElementById('progressBar-' + fileName);
 	const progressPercentage = document.getElementById('progressPercentage-' + fileName);
 	const uploadProgress = document.getElementById('uploadProgress-' + fileName);
-	const uploadBtn = document.getElementById("uploadBtn-" + fileName);
-	uploadBtn.remove();
 	uploadProgress.style.display = 'flex';
+
+	const uploadBtn = document.getElementById("uploadBtn-" + fileName);
+	const hashError = document.getElementById("hash-error");
+	uploadBtn.remove();
+	hashError.remove();
+
 
 	const formData = new FormData();
 	formData.append('file', file);
@@ -249,10 +263,11 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
 
 		if (response.ok) {
 			const result = await response.json();
-			displayResults(result.data.attributes, fileName, fileSection);
+			displayResults(result.data.attributes, fileName, fileSection, file);
 		}
 		else if (response.status === 404) {
-			fileSection.innerHTML += `<p>File with hash ${hash} not found in VirusTotal database.</p>`;
+			fileSection.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;
+			fileSection.innerHTML += `<p style="color: red;" id="hash-error">File with hash ${hash} not found in VirusTotal database.</p>`;
 
 			// ایجاد دکمه آپلود
 			if (file.size <= 32 * 1024 * 1024 && file) {
@@ -290,7 +305,36 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
 	}
 }
 
-function displayResults(attributes, fileName, fileSection) {
+function timeAgo(timestamp) {
+	// Convert seconds to milliseconds
+	const timeInMs = timestamp * 1000;
+	const now = new Date();
+	const secondsPast = Math.floor((now.getTime() - timeInMs) / 1000);
+
+	if (secondsPast < 60) {
+		return `${secondsPast} seconds ago`;
+	}
+	if (secondsPast < 3600) {
+		const minutesPast = Math.floor(secondsPast / 60);
+		return `${minutesPast} minutes ago`;
+	}
+	if (secondsPast < 86400) {
+		const hoursPast = Math.floor(secondsPast / 3600);
+		return `${hoursPast} hours ago`;
+	}
+	if (secondsPast < 2592000) {
+		const daysPast = Math.floor(secondsPast / 86400);
+		return `${daysPast} days ago`;
+	}
+	if (secondsPast < 31536000) {
+		const monthsPast = Math.floor(secondsPast / 2592000);
+		return `${monthsPast} months ago`;
+	}
+	const yearsPast = Math.floor(secondsPast / 31536000);
+	return `${yearsPast} years ago`;
+}
+
+function displayResults(attributes, fileName, fileSection, file = undefined) {
 
 	const { last_analysis_stats, last_analysis_results } = attributes;
 	const totalAVs = last_analysis_stats.harmless + last_analysis_stats.malicious + last_analysis_stats.suspicious + last_analysis_stats.undetected + last_analysis_stats.timeout;
@@ -298,12 +342,19 @@ function displayResults(attributes, fileName, fileSection) {
 
 	loadingStep.innerHTML = `${fileCounter} of ${filesLength}`;
 
-	fileSection.innerHTML += `<p><strong>File Name: </strong> ${fileName}</p>`;
+	const mainInfo = document.createElement('div');
+	mainInfo.classList.add("main-info");
+
+	fileSection.appendChild(mainInfo);
 
 	// نمایش اطلاعات کلی
-	fileSection.innerHTML += `
-        <p><strong>Scan result: </strong><span style="color:${maliciousAVs > 1 ? "red" : "#4caf50"}; font-size: 18px;">${maliciousAVs} of ${totalAVs}</span></p>
+	mainInfo.innerHTML += `
+        <p>Scan result:<span style="color:${maliciousAVs > 2 ? "red" : "#00a500"}; font-weight: 700; margin-left: 4px;">${maliciousAVs} of ${totalAVs}</span> <strong> antivirus malicious detected</strong></p>
     `;
+	mainInfo.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;
+	mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
+	mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;
+	fileSection.innerHTML += `<hr>`;
 
 	// ایجاد آکاردیون برای نتایج دقیق آنتی ویروس‌ها
 	const accordionId = `accordion-${fileName.replace(/\s+/g, '-')}`;
@@ -315,8 +366,8 @@ function displayResults(attributes, fileName, fileSection) {
 	let accordionContent = `
         <div class="accordion-item">
             <h2 class="accordion-header" id="heading-${accordionId}">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${accordionId}" aria-expanded="true" aria-controls="collapse-${accordionId}">
-                    Click for Details
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${accordionId}" aria-expanded="true" aria-controls="collapse-${accordionId}" style="font-size: 17px !important;">
+                    Read more
                 </button>
             </h2>
             <div id="collapse-${accordionId}" class="accordion-collapse collapse" aria-labelledby="heading-${accordionId}" data-bs-parent="#${accordionId}">
