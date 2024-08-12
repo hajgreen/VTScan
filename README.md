@@ -1,19 +1,20 @@
 # VTScan
 
-VirusTotal Scanner is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
+VTScan (Virus Total Scan) is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
 
 ## Features
-
+- **Speeedup and Lightweight**: The main focus of VTScan is on speed and optimization. The speed of this software is faster than the virustotal site.
+- **Beautiful and modern design**: Simple and beautiful design and user interface that is implemented in the best way with the help of bootstrap.
 - **Drag and Drop Interface**: Easily drag and drop files or select files and folders for scanning.
+- **Folder Scan**: Select the folder and scan all files with executable extension.
 - **Real-Time Scanning**: Scan files using the VirusTotal API and get instant results.
 - **Cross-Platform**: Works on Windows, macOS, and Linux.
 
 ## Requirements
 
-- Node.js (v12.x or higher)
+- Node.js (v16.x or higher)
 - npm or yarn
-- Electron (v11.x or higher)
-- A VirusTotal API key
+- Electron (v12.x or higher)
 
 ### Key Sections Explanation
 
@@ -28,31 +29,14 @@ VirusTotal Scanner is an Electron-based application that allows users to scan fi
 9. **License**: Information about the licensing of the project.
 10. **Acknowledgements**: Credits the tools and services used in the project.
 
-This `README.md` file should give users a clear understanding of how to set up and use your VirusTotal Scanner application, as well as provide developers with the information they need to contribute to or modify the project.
-همه اینارو تبدیل به یک README.md بکن تحویل بده
-ChatGPT
-Here is the complete README.md file based on the information provided:
+## Intsall execute installer
 
-markdown
-Copy code
-# VirusTotal Scanner
+1. download installer from releases project
 
-VirusTotal Scanner is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
+2. install program
+ 
 
-## Features
-
-- **Drag and Drop Interface**: Easily drag and drop files or select files and folders for scanning.
-- **Real-Time Scanning**: Scan files using the VirusTotal API and get instant results.
-- **Cross-Platform**: Works on Windows, macOS, and Linux.
-
-## Requirements
-
-- Node.js (v12.x or higher)
-- npm or yarn
-- Electron (v11.x or higher)
-- A VirusTotal API key
-
-## Installation
+## Install Source Code
 
 1. **Clone the Repository**:
 
