@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
+const { api_keys } = require('./data/vt_api_keys.json');
 
 require('dotenv').config();
 
@@ -59,5 +60,11 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.handle('get-api-key', () => {
-	return process.env.VIRUSTOTAL_API_KEY;
+
+	if (process.env.VIRUSTOTAL_API_KEY) {
+		return [process.env.VIRUSTOTAL_API_KEY];
+	}
+	else {
+		return api_keys;
+	}
 });

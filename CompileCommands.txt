@@ -1,2 +1,0 @@
-Windows Compile Command:
-npx @electron/packager . VTScan --platform=win32 --arch=x64

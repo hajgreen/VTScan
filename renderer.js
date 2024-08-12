@@ -4,13 +4,28 @@ const fileInput = document.getElementById('file-input');
 const folderInput = document.getElementById('folder-input');
 const fileSelectButton = document.getElementById('file-select-button');
 const folderSelectButton = document.getElementById('folder-select-button');
+const loadingStep = document.getElementById('loading-step');
+
 const crypto = require('crypto');
 const path = require('path');
 const { ipcRenderer } = require('electron');
 
+
 //Get Api Key
+var apiCounter = -1;
+
 async function getApiKey() {
-	return await ipcRenderer.invoke('get-api-key');
+	const api = await ipcRenderer.invoke('get-api-key');
+
+	if (api.length != apiCounter + 1) {
+		apiCounter += 1;
+	} else {
+		apiCounter = 0;
+	}
+
+	console.log(api[apiCounter]);
+
+	return api[apiCounter];
 }
 
 //MenuBar and Context Menu
@@ -82,18 +97,33 @@ folderSelectButton.addEventListener('click', () => {
 	folderInput.click();
 });
 
+var filesLength = 0;
+var fileCounter = 0;
+
 folderInput.addEventListener('change', async (event) => {
 	const files = event.target.files;
+	const executableExtensions = ['.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.gadget', '.msc', '.pif', '.reg', '.inf', '.jar', '.py'];
+
+	fileCounter = 2;
+
+	let counter = 0;
+	for (let file of files) {
+		const ext = path.extname(file.name).toLowerCase();
+		if (executableExtensions.includes(ext)) {
+			counter++;
+		}
+	}
+
+	filesLength = counter;
 
 	resultsContainer.innerHTML = "";
-	resultsContainer.innerHTML += `<h4 style="margin-bottom: 20px;"><strong>Files count: ${files.length} </strong></h4>`;
-
-	const executableExtensions = ['.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.gadget', '.msc', '.pif', '.reg', '.inf', '.jar', '.py'];
+	resultsContainer.innerHTML += `<h4 style="margin-bottom: 20px;"><strong>Files count: ${counter} </strong></h4>`;
 
 	for (let file of files) {
 		const ext = path.extname(file.name).toLowerCase();
 		if (executableExtensions.includes(ext)) {
 			await handleFile(file);
+			fileCounter += 1;
 		}
 	}
 });
@@ -101,10 +131,15 @@ folderInput.addEventListener('change', async (event) => {
 // Function برای پردازش فایل‌های انتخابی
 async function handleMultipleFiles(files) {
 	ShowLoading(true);
+
+	fileCounter = 1;
+	filesLength = files.length;
+
 	resultsContainer.innerHTML = "";
 	resultsContainer.innerHTML += `<h4 style="margin-bottom: 20px;"><strong>Files count: ${files.length} </strong></h4>`;
 
 	for (let file of files) {
+		fileCounter += 1;
 		await handleFile(file);
 	}
 
@@ -183,10 +218,11 @@ async function checkFileHash(hash, fileName, fileSection) {
 }
 
 function displayResults(attributes, fileName, fileSection) {
-
 	const { last_analysis_stats, last_analysis_results } = attributes;
 	const totalAVs = last_analysis_stats.harmless + last_analysis_stats.malicious + last_analysis_stats.suspicious + last_analysis_stats.undetected + last_analysis_stats.timeout;
 	const maliciousAVs = last_analysis_stats.malicious;
+
+	loadingStep.innerHTML = `${fileCounter} of ${filesLength} done`;
 
 	fileSection.innerHTML += `<p><strong>File Name: </strong> ${fileName}</p>`;
 
@@ -214,7 +250,8 @@ function displayResults(attributes, fileName, fileSection) {
     `;
 
 	// اضافه کردن نتایج دقیق به آکاردیون
-	Object.keys(last_analysis_results).forEach((engine, index) => {
+	Object.keys(last_analysis_results).forEach((engine) => {
+
 		const result = last_analysis_results[engine];
 		const statusClass = result.category === 'undetected' ? 'status-clean' :
 			result.category === 'malicious' ? 'status-malicious' : 'status-unknown';
