@@ -1,4 +1,4 @@
-# VirusTotal Scanner
+# VTScan
 
 VirusTotal Scanner is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
 
@@ -20,8 +20,8 @@ VirusTotal Scanner is an Electron-based application that allows users to scan fi
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/your-username/virustotal-scanner.git
-   cd virustotal-scanner
+   git clone https://github.com/madrasa7/VTScan.git
+   cd VTScan
 Install Dependencies:
 
 Run the following command to install all the necessary dependencies:
@@ -66,8 +66,8 @@ Clone the Repository:
 
 bash
 Copy code
-git clone https://github.com/your-username/virustotal-scanner.git
-cd virustotal-scanner
+git clone https://github.com/madrasa7/VTScan.git
+cd VTScan
 Install Dependencies:
 
 bash
