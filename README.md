@@ -1,85 +1,201 @@
-VTScan
+# VirusTotal Scanner
 
-Overview
-VirusTotal File Scanner is a desktop application built with Electron that allows users to scan files and folders for potential threats using the VirusTotal API. The application is designed to provide a seamless user experience, with a drag-and-drop interface and context menu options for quick file and folder scanning.
+VirusTotal Scanner is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
 
-Features
-Drag-and-Drop Interface: Easily drag and drop files or folders to initiate a scan.
-Context Menu Integration: Right-click to scan files or folders directly.
-File and Folder Support: Scan individual files or entire directories.
-VirusTotal API Integration: Utilizes the powerful VirusTotal API to analyze files.
-Cross-Platform: Available on Windows, macOS, and Linux.
-Prerequisites
-Before running the application, ensure you have the following installed:
+## Features
 
-Node.js (v14 or higher recommended)
-Electron
-Installation
-Clone the Repository
-bash
-Copy code
-git clone https://github.com/yourusername/virustotal-file-scanner.git
-cd virustotal-file-scanner
-Install Dependencies
+- **Drag and Drop Interface**: Easily drag and drop files or select files and folders for scanning.
+- **Real-Time Scanning**: Scan files using the VirusTotal API and get instant results.
+- **Cross-Platform**: Works on Windows, macOS, and Linux.
+
+## Requirements
+
+- Node.js (v12.x or higher)
+- npm or yarn
+- Electron (v11.x or higher)
+- A VirusTotal API key
+
+## Installation
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/your-username/virustotal-scanner.git
+   cd virustotal-scanner
+Install Dependencies:
+
+Run the following command to install all the necessary dependencies:
+
 bash
 Copy code
 npm install
-Set Up VirusTotal API Key
-Sign up for an API key from VirusTotal.
+Configure the API Key:
 
-Create a .env file in the root directory of the project.
-
-Add your API key to the .env file:
+Create a .env file in the root directory and add your VirusTotal API key:
 
 bash
 Copy code
-VIRUSTOTAL_API_KEY=your_api_key_here
-Running the Application
-To start the application, run:
+VTS_API_KEY=your_virustotal_api_key_here
+Usage
+Start the Application:
+
+To start the Electron application, run:
 
 bash
 Copy code
 npm start
-This command will open the Electron application window.
+Scan Files:
 
-Usage
-Drag and Drop: Drag a file or folder into the designated area in the application to start scanning.
-Context Menu: Right-click within the application to access the context menu, where you can select files or folders to scan.
-View Results: After scanning, the results will be displayed in the application, showing detailed information about potential threats.
-Screenshots
-(Add screenshots of your application)
+Drag and drop files into the application window or use the "Select File" or "Select Folder" buttons.
+The application will scan the files and display the results.
+Application Menu
+The application menu provides the following options:
 
-Main Interface
-
-
-Scan Results
-
+File: Allows you to quit the application.
+Edit: Standard edit options (Undo, Redo, Cut, Copy, Paste).
+View: Options to reload, toggle developer tools, and adjust zoom.
+Window: Window management options.
+Help: A link to learn more about Electron.
+Context Menu
+Right-click anywhere in the application to open a context menu that provides quick access to file and folder scanning options.
 
 Development
-File Structure
+If you want to contribute to this project or modify it for your own needs, follow these steps:
+
+Clone the Repository:
+
 bash
 Copy code
-.
-├── main.js          # Main process for Electron
-├── renderer.js      # Renderer process for the app
-├── index.html       # HTML structure of the app
-├── style.css        # Styling for the app
-├── .env             # Environment variables (API key)
-├── package.json     # NPM dependencies and scripts
-└── README.md        # Project documentation
-Adding More Features
-Feel free to contribute to the project by submitting pull requests. Some potential features to add:
+git clone https://github.com/your-username/virustotal-scanner.git
+cd virustotal-scanner
+Install Dependencies:
 
-History of Scans: Keep track of previously scanned files.
-Automatic Updates: Integrate automatic updates for the application.
-Detailed Reports: Generate and export detailed scan reports in PDF format.
-Troubleshooting
-File Chooser Dialog Error: Ensure the file chooser dialog is triggered by a direct user action to avoid the File chooser dialog can only be shown with a user activation error.
-API Key Issues: Double-check that your VirusTotal API key is correctly added to the .env file.
+bash
+Copy code
+npm install
+Make Your Changes:
+
+Make any changes you want in the source code. The main logic resides in the main.js and renderer.js files.
+
+Run the Application:
+
+Use the npm start command to test your changes.
+
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Acknowledgments
-VirusTotal for providing the API used in this application.
-Electron for the framework to build cross-platform desktop apps.
-This README template should give you a comprehensive guide for users and developers interacting with your VirusTotal File Scanner application. Adjust the content as necessary to fit your project's specifics.
+Acknowledgements
+Electron for providing the framework.
+VirusTotal for the scanning API.
+markdown
+Copy code
+
+### Key Sections Explanation
+
+1. **Project Title and Description**: Provides an overview of what the application does.
+2. **Features**: Lists the main functionalities of the application.
+3. **Requirements**: Specifies the software dependencies needed to run the project.
+4. **Installation**: A step-by-step guide to set up the project locally.
+5. **Usage**: Instructions on how to start and use the application.
+6. **Application Menu**: Describes the different menu options available in the app.
+7. **Context Menu**: Information on how to use the context menu.
+8. **Development**: Guidelines for developers who want to contribute to the project.
+9. **License**: Information about the licensing of the project.
+10. **Acknowledgements**: Credits the tools and services used in the project.
+
+This `README.md` file should give users a clear understanding of how to set up and use your VirusTotal Scanner application, as well as provide developers with the information they need to contribute to or modify the project.
+همه اینارو تبدیل به یک README.md بکن تحویل بده
+ChatGPT
+Here is the complete README.md file based on the information provided:
+
+markdown
+Copy code
+# VirusTotal Scanner
+
+VirusTotal Scanner is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
+
+## Features
+
+- **Drag and Drop Interface**: Easily drag and drop files or select files and folders for scanning.
+- **Real-Time Scanning**: Scan files using the VirusTotal API and get instant results.
+- **Cross-Platform**: Works on Windows, macOS, and Linux.
+
+## Requirements
+
+- Node.js (v12.x or higher)
+- npm or yarn
+- Electron (v11.x or higher)
+- A VirusTotal API key
+
+## Installation
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/your-username/virustotal-scanner.git
+   cd virustotal-scanner
+Install Dependencies:
+
+Run the following command to install all the necessary dependencies:
+
+bash
+Copy code
+npm install
+Configure the API Key:
+
+Create a .env file in the root directory and add your VirusTotal API key:
+
+bash
+Copy code
+VTS_API_KEY=your_virustotal_api_key_here
+Usage
+Start the Application:
+
+To start the Electron application, run:
+
+bash
+Copy code
+npm start
+Scan Files:
+
+Drag and drop files into the application window or use the "Select File" or "Select Folder" buttons.
+The application will scan the files and display the results.
+Application Menu
+The application menu provides the following options:
+
+File: Allows you to quit the application.
+Edit: Standard edit options (Undo, Redo, Cut, Copy, Paste).
+View: Options to reload, toggle developer tools, and adjust zoom.
+Window: Window management options.
+Help: A link to learn more about Electron.
+Context Menu
+Right-click anywhere in the application to open a context menu that provides quick access to file and folder scanning options.
+
+Development
+If you want to contribute to this project or modify it for your own needs, follow these steps:
+
+Clone the Repository:
+
+bash
+Copy code
+git clone https://github.com/your-username/virustotal-scanner.git
+cd virustotal-scanner
+Install Dependencies:
+
+bash
+Copy code
+npm install
+Make Your Changes:
+
+Make any changes you want in the source code. The main logic resides in the main.js and renderer.js files.
+
+Run the Application:
+
+Use the npm start command to test your changes.
+
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+Acknowledgements
+Electron for providing the framework.
+VirusTotal for the scanning API.
