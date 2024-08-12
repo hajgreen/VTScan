@@ -149,6 +149,7 @@ Create a .env file in the root directory and add your VirusTotal API key:
 Copy code
    ```bash
    VIRUSTOTAL_API_KEY=your_virustotal_api_key_here
+   ```
 Usage
 Start the Application:
 
