@@ -1,7 +1,7 @@
 {
   "name": "VTScan",
   "productName": "VTScan",
-  "description": "My Electron application description",
+  "description": "VTScan VirusTotal scan files",
   "keywords": [],
   "main": "./main.js",
   "version": "1.0.0",
