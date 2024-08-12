@@ -132,8 +132,8 @@ VirusTotal Scanner is an Electron-based application that allows users to scan fi
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/your-username/virustotal-scanner.git
-   cd virustotal-scanner
+   git clone https://github.com/madrasa7/VTScan.git
+   cd VTScan
 Install Dependencies:
 
 Run the following command to install all the necessary dependencies:
