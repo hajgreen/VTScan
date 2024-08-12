@@ -142,7 +142,8 @@ Copy code
 ```bash
 npm install
 ```
-# Configure the API Key:
+
+1. **Configure the API Key**:
 
 * Create a .env file in the root directory and add your VirusTotal API key:
 
