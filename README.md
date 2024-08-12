@@ -1,6 +1,6 @@
 # VTScan
 
-VirusTotal Scanner is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
+VTScan (Virus Total Scan) is an Electron-based application that allows users to scan files and folders using the VirusTotal API. This application provides a simple and intuitive interface for users to easily check their files for potential threats.
 
 ## Features
 
