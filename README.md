@@ -8,7 +8,7 @@ VTScan (Virus Total Scan) is an Electron-based application that allows users to 
 - **Drag and Drop Interface**: Easily drag and drop files or select files and folders for scanning.
 - **Folder Scan**: Select the folder and scan all files with executable extension.
 - **Real-Time Scanning**: Scan files using the VirusTotal API and get instant results.
-- **Cross-Platform**: Works on Windows, macOS, and Linux.
+- **Cross-Platform**: Works on Windows, macOS, and Linux (Currently it is only compiled for Windows, you can compile this project for your operating system)
 
 ## Requirements
 
