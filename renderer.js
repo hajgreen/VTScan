@@ -5,10 +5,11 @@ const folderInput = document.getElementById('folder-input');
 const fileSelectButton = document.getElementById('file-select-button');
 const folderSelectButton = document.getElementById('folder-select-button');
 const loadingStep = document.getElementById('loading-step');
-const { dark_mode } = require("./config_vtscan.json");
+const config_file = require("./config_vtscan.json");
 
 const crypto = require('crypto');
 const path = require('path');
+const fs = require('fs');
 const { ipcRenderer } = require('electron');
 
 var filesLength = 0;
@@ -16,7 +17,83 @@ var fileCounter = 1;
 
 //dark mode
 
-if (dark_mode == "true") {
+function updateJsonFile(filePath, key, newValue) {
+	// Step 1: Read the JSON file
+	fs.readFile(filePath, 'utf8', (err, data) => {
+		if (err) {
+			console.error(`Error reading file from disk: ${err}`);
+			return;
+		}
+
+		try {
+			// Step 2: Parse the JSON data
+			const jsonData = JSON.parse(data);
+
+			// Step 3: Update the value in the JSON object
+			jsonData[key] = newValue;
+
+			// Step 4: Convert JSON object back to a string
+			const updatedJsonData = JSON.stringify(jsonData, null, 4);
+
+			// Step 5: Write the updated JSON data back to the file
+			fs.writeFile(filePath, updatedJsonData, 'utf8', (err) => {
+				if (err) {
+					console.error(`Error writing file: ${err}`);
+					return;
+				}
+				console.log('JSON file has been updated');
+			});
+		} catch (err) {
+			console.error(`Error parsing JSON string: ${err}`);
+		}
+	});
+}
+
+
+function isStyleSheetLoaded(href) {
+	const links = document.getElementsByTagName('link');
+	for (let i = 0; i < links.length; i++) {
+		if (links[i].rel === 'stylesheet' && links[i].href.includes(href)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// تابع برای حذف یا اضافه کردن فایل style_dark.css
+function change_mode(href = 'style_dark.css') {
+	if (isStyleSheetLoaded(href)) {
+		// اگر فایل لود شده بود، آن را حذف کن
+		const links = document.getElementsByTagName('link');
+		for (let i = 0; i < links.length; i++) {
+			if (links[i].rel === 'stylesheet' && links[i].href.includes(href)) {
+
+				document.getElementById("dark-mode-icon").style.display = "block";
+				document.getElementById("light-mode-icon").style.display = "none";
+				document.getElementById("dark-mode-text").innerText = "Dark mode";
+
+				updateJsonFile("./config_vtscan.json", "dark_mode", "false");
+
+				links[i].parentNode.removeChild(links[i]);
+				return;
+			}
+		}
+	} else {
+		// اگر فایل لود نشده بود، آن را اضافه کن
+		const link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.href = href;
+		document.head.appendChild(link);
+
+		document.getElementById("light-mode-icon").style.display = "block";
+		document.getElementById("dark-mode-icon").style.display = "none";
+		document.getElementById("dark-mode-text").innerText = "Light mode";
+
+		updateJsonFile("./config_vtscan.json", "dark_mode", "true");
+	}
+}
+
+if (config_file.dark_mode == "true") {
 	const link = document.createElement('link');
 	link.rel = 'stylesheet';
 	link.href = 'style_dark.css';
