@@ -87,28 +87,6 @@ Help: A link to learn more about Electron.
 Context Menu
 Right-click anywhere in the application to open a context menu that provides quick access to file and folder scanning options.
 
-Development
-If you want to contribute to this project or modify it for your own needs, follow these steps:
-
-Clone the Repository:
-
-bash
-Copy code
-git clone https://github.com/madrasa7/VTScan.git
-cd VTScan
-Install Dependencies:
-
-bash
-Copy code
-npm install
-Make Your Changes:
-
-Make any changes you want in the source code. The main logic resides in the main.js and renderer.js files.
-
-Run the Application:
-
-Use the npm start command to test your changes.
-
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
