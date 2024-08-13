@@ -31,7 +31,7 @@ VTScan (Virus Total Scan) is an Electron-based application that allows users to 
 
 ## Intsall execute installer
 
-1. download installer from releases project
+1. download installer from last releases project
 
 2. install program
  
