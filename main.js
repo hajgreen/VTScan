@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme } = require('electron');
-const path = require('path');
 const { api_keys } = require('./data/vt_api_keys.json');
 const { version } = require('./package.json');
+const path = require('path');
 const storage = require('node-persist');
 storage.initSync();
 

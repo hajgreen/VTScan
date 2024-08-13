@@ -66,6 +66,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
             }
             else {
                 fileSection.innerHTML += `<p>File is larger than 32MB and cannot be uploaded.</p>`;
+                ShowLoading(false);
             }
         }
         else {

@@ -22,9 +22,7 @@ async function handleMultipleFiles(files) {
     ShowLoading(false);
 }
 
-// Function برای پردازش فایل انتخابی
 async function handleFile(file) {
-
     const maxFileSize = 650 * 1024 * 1024;
 
     if (file.size > maxFileSize) {
@@ -33,29 +31,29 @@ async function handleFile(file) {
         return;
     }
 
-    // نمایش نام فایل
     const fileName = file.name;
     const fileSection = document.createElement('div');
     fileSection.className = 'file-section';
-    resultsContainer.appendChild(fileSection);
+    document.getElementById('results').appendChild(fileSection);
 
-    // Read file as buffer
-    const buffer = await file.arrayBuffer();
-    const fileData = new Uint8Array(buffer);
+    const reader = new FileReader();
+    reader.onload = function () {
+        const fileData = new Uint8Array(reader.result);
 
-    // محاسبه هش فایل
-    const hash = calculateHash(fileData);
+        const worker = new Worker('./modules/worker.js');
+        worker.postMessage({ fileData: fileData.buffer });
 
-    // نمایش هش فایل
-    fileSection.innerHTML += `<p>File Hash (SHA-1): ${hash}</p>`;
+        worker.onmessage = async function (event) {
+            const hash = event.data;
+            fileSection.innerHTML += `<p>File Hash (SHA-1): ${hash}</p>`;
+            await checkFileHash(hash, fileName, fileSection, file);
+        };
 
-    // بررسی هش در VirusTotal
-    await checkFileHash(hash, fileName, fileSection, file);
-}
-
-function calculateHash(fileData) {
-    const crypto = require('crypto');
-    return crypto.createHash('sha1').update(fileData).digest('hex');
+        worker.onerror = function (error) {
+            console.error('Worker error:', error);
+        };
+    };
+    reader.readAsArrayBuffer(file);
 }
 
 module.exports = { handleFile, handleMultipleFiles };
