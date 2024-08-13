@@ -115,7 +115,7 @@ folderInput.addEventListener('change', async (event) => {
 	resultsContainer.innerHTML += `
 		<div class="result-header">
 			<h4>Result</h4>
-			<h5 style="margin-bottom: 20px;">Files count: ${files.length}</h5>
+			<h5 style="margin-bottom: 20px;">Files count: ${counter}</h5>
 		</div>
 	`;
 
@@ -191,6 +191,46 @@ function ShowLoading(bool) {
 	}
 }
 
+async function pollScanResults(scanId, fileName, fileSection) {
+	const apiKey = await getApiKey();
+	const url = `https://www.virustotal.com/api/v3/analyses/${scanId}`;
+
+	document.getElementById(`messageProgessBar-${fileName}`).innerHTML = `
+		<div class="progress-polling mt-2 gap-2">
+			<span>Scanning in progress (this process may take time)</span>
+			<div class="spinner-border text-primary" style="height: 28px !important; width: 28px !important; font-size: 16px;" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+	`;
+
+	const intervalId = setInterval(async () => {
+		try {
+			const response = await fetch(url, {
+				method: 'GET',
+				headers: {
+					'x-apikey': apiKey
+				}
+			});
+
+			if (response.ok) {
+				const result = await response.json();
+
+				if (result.data.attributes.status == "completed") {
+					displayStreamingResults(result.data.attributes, fileName, fileSection);
+					clearInterval(intervalId);
+				}
+			} else {
+				fileSection.innerHTML += `<p>Error fetching scan results: ${response.statusText}</p>`;
+				clearInterval(intervalId);
+			}
+		} catch (error) {
+			fileSection.innerHTML += `<p>Network or fetch error: ${error.message}</p>`;
+			clearInterval(intervalId);
+		}
+	}, 2000); // چک کردن هر 5 ثانیه
+}
+
 async function uploadFile(file, fileSection) {
 	const apiKey = await getApiKey();
 	const url = "https://www.virustotal.com/api/v3/files";
@@ -234,7 +274,9 @@ async function uploadFile(file, fileSection) {
 	// رویداد زمانی که آپلود کامل شد
 	xhr.onload = function () {
 		if (xhr.status === 200) {
-
+			const response = JSON.parse(xhr.responseText);
+			const scanId = response.data.id;
+			pollScanResults(scanId, file.name, fileSection);
 		}
 		else {
 			fileSection.innerHTML += `<p>Error uploading file: ${xhr.statusText}</p>`;
@@ -291,6 +333,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
 										`;
 				fileSection.appendChild(uploadProgress);
 
+				ShowLoading(false);
 			}
 			else {
 				fileSection.innerHTML += `<p>File is larger than 32MB and cannot be uploaded.</p>`;
@@ -412,6 +455,78 @@ function displayResults(attributes, fileName, fileSection, file = undefined) {
 
 	accordion.innerHTML = accordionContent;
 	fileSection.appendChild(accordion);
+
+	ShowLoading(false);
+}
+
+function displayStreamingResults(attributes, fileName) {
+
+	resultsContainer.innerHTML = "";
+
+	const fileSec = document.createElement('div');
+	fileSec.className = 'file-section';
+	resultsContainer.appendChild(fileSec);
+
+	const { stats, results } = attributes;
+	const totalAVs = stats.harmless + stats.malicious + stats.suspicious + stats.undetected + stats.timeout;
+	const maliciousAVs = stats.malicious;
+
+	// نمایش نام فایل و نتیجه اسکن
+	fileSec.innerHTML += `<p><strong>File Name: </strong> ${fileName}</p>`;
+	fileSec.innerHTML += `<p><strong>Scan result: </strong><span style="color:${maliciousAVs > 1 ? "red" : "#4caf50"}; font-size: 18px;">${maliciousAVs} of ${totalAVs}</span></p>`;
+
+	const accordionId = `accordion-${fileCounter}`;
+	const accordion = document.createElement('div');
+	accordion.className = 'accordion';
+	accordion.id = accordionId;
+
+	let accordionContent = `
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-${accordionId}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${accordionId}" aria-expanded="true" aria-controls="collapse-${accordionId}">
+                    Click for Details
+                </button>
+            </h2>
+            <div id="collapse-${accordionId}" class="accordion-collapse collapse" aria-labelledby="heading-${accordionId}" data-bs-parent="#${accordionId}">
+                <div class="accordion-body row">
+    `;
+
+	// مرتب‌سازی نتایج بر اساس اولویت: ویروسی‌ها در ابتدا نمایش داده می‌شوند
+	const sortedResults = Object.keys(results).sort((a, b) => {
+		const categoryA = results[a].category;
+		const categoryB = results[b].category;
+
+		if (categoryA === 'malicious' && categoryB !== 'malicious') return -1;
+		if (categoryA !== 'malicious' && categoryB === 'malicious') return 1;
+		return 0;
+	});
+
+	// اضافه کردن نتایج دقیق به آکاردیون
+	sortedResults.forEach((engine) => {
+		const result = results[engine];
+		const statusClass = result.category === 'undetected' ? 'status-clean' :
+			result.category === 'malicious' ? 'status-malicious' : 'status-unknown';
+
+		accordionContent += `
+            <div class="col-lg-4 main-card">
+                <div class="card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span style="font-weight: 600;">${engine}</span>
+                        <span class="status ${statusClass}">${result.result || result.category}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+	});
+
+	accordionContent += `
+                </div>
+            </div>
+        </div>
+    `;
+
+	accordion.innerHTML = accordionContent;
+	fileSec.appendChild(accordion);
 
 	ShowLoading(false);
 }
