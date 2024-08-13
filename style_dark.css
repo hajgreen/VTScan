@@ -2,6 +2,31 @@ body {
   background-color: #202020;
 }
 
+/* Scroll Bar */
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #202020;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 32px;
+  background: #424242;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #575757;
+}
+
+/*  */
+
 #drop-area {
   border: 2px dashed #4a4a4a;
   background-color: rgb(40, 40, 40);
