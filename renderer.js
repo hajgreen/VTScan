@@ -112,7 +112,9 @@ fileInput.addEventListener('change', async (event) => {
 
 folderInput.addEventListener('change', async (event) => {
 	const files = event.target.files;
-	const executableExtensions = ['.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.gadget', '.msc', '.pif', '.reg', '.inf', '.jar', '.py'];
+	const executableExtensions = [
+		'.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.msc', '.reg', '.inf', '.jar', '.py', ".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz", ".tar.gz", ".tar.bz2", ".tar.xz", ".z", ".lz", ".lzma", ".cab", ".iso", ".tgz", ".tbz2", ".txz", ".wim", ".dmg", ".s7z"
+	];
 
 	fileCounter = 1;
 
