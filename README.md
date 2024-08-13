@@ -72,7 +72,7 @@ Copy code
    ```bash
    npm start
    ```
-Scan Files:
+## Scan Files:
 
 Drag and drop files into the application window or use the "Select File" or "Select Folder" buttons.
 The application will scan the files and display the results.
