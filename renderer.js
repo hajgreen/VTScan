@@ -5,6 +5,7 @@ const folderInput = document.getElementById('folder-input');
 const fileSelectButton = document.getElementById('file-select-button');
 const folderSelectButton = document.getElementById('folder-select-button');
 const loadingStep = document.getElementById('loading-step');
+const { dark_mode } = require("./config_vtscan.json");
 
 const crypto = require('crypto');
 const path = require('path');
@@ -12,6 +13,19 @@ const { ipcRenderer } = require('electron');
 
 var filesLength = 0;
 var fileCounter = 1;
+
+//dark mode
+
+if (dark_mode == "true") {
+	const link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.href = 'style_dark.css';
+	document.head.appendChild(link);
+
+	document.getElementById("light-mode-icon").style.display = "block";
+	document.getElementById("dark-mode-icon").style.display = "none";
+	document.getElementById("dark-mode-text").innerText = "Light mode";
+}
 
 //Get Api Key
 var apiCounter = -1;
@@ -152,6 +166,14 @@ async function handleMultipleFiles(files) {
 
 // Function برای پردازش فایل انتخابی
 async function handleFile(file) {
+
+	const maxFileSize = 650 * 1024 * 1024;
+
+	if (file.size > maxFileSize) {
+		alert('File size exceeds the 650 MB limit.');
+		resultsContainer.innerHTML = "";
+		return;
+	}
 
 	// نمایش نام فایل
 	const fileName = file.name;

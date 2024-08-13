@@ -1,0 +1,64 @@
+body {
+  background-color: #202020;
+}
+
+#drop-area {
+  border: 2px dashed #4a4a4a;
+  background-color: rgb(40, 40, 40);
+  color: #858585;
+}
+
+#drop-area:hover {
+  background-color: rgb(43, 43, 43);
+}
+
+.file-section {
+  padding-bottom: 24px;
+  background-color: rgb(40, 40, 40);
+  box-shadow: 0 0 6px #000000;
+}
+
+.accordion-body {
+  background-color: rgb(40, 40, 40);
+}
+
+.card {
+  background-color: rgb(46, 46, 46);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  border: 0;
+}
+
+.accordion-button::after {
+  color: white !important;
+}
+
+.accordion-button {
+  border: 0 !important;
+  background-color: rgb(171, 171, 171);
+}
+
+hr {
+  border: 1px solid rgb(130, 130, 130) !important;
+}
+
+#loading {
+  background-color: rgb(26, 26, 26);
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: rgb(185, 185, 185);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: rgb(238, 238, 238);
+}
+
+p,
+span {
+  color: rgb(198, 198, 198);
+}

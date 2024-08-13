@@ -198,6 +198,24 @@ body {
   margin-top: 42px;
 }
 
+.button-dark-mode {
+  display: flex;
+  padding-right: 10px !important;
+  justify-items: center;
+  background: none;
+  border: 0;
+  color: rgb(222, 222, 222);
+  background-color: #454545;
+  padding: 8px 0;
+  border-radius: 6px;
+  margin-left: 18px;
+}
+
+.button-dark-mode svg {
+  width: 42px;
+  height: 24px;
+}
+
 /* Responsive design for tablets and phones */
 @media (max-width: 768px) {
   #av-results {

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme } = require('electron');
 const path = require('path');
 const { api_keys } = require('./data/vt_api_keys.json');
 const { version } = require('./package.json');
@@ -20,6 +20,8 @@ function createWindow() {
 
 	win.loadFile('index.html');
 }
+
+nativeTheme.themeSource = 'dark';
 
 app.whenReady().then(() => {
 
