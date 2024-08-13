@@ -8,7 +8,7 @@ VTScan (Virus Total Scan) is an Electron-based application that allows users to 
 - **Drag and Drop Interface**: Easily drag and drop files or select files and folders for scanning.
 - **Folder Scan**: Select the folder and scan all files with executable extension.
 - **Real-Time Scanning**: Scan files using the VirusTotal API and get instant results.
-- **Cross-Platform**: Works on Windows, macOS, and Linux.
+- **Cross-Platform**: Works on Windows, macOS, and Linux (Currently it is only compiled for Windows, you can compile this project for your operating system)
 
 ## Requirements
 
@@ -31,7 +31,7 @@ VTScan (Virus Total Scan) is an Electron-based application that allows users to 
 
 ## Intsall execute installer
 
-1. download installer from releases project
+1. download installer from last releases project
 
 2. install program
  
@@ -72,7 +72,7 @@ Copy code
    ```bash
    npm start
    ```
-Scan Files:
+## Scan Files:
 
 Drag and drop files into the application window or use the "Select File" or "Select Folder" buttons.
 The application will scan the files and display the results.
@@ -86,28 +86,6 @@ Window: Window management options.
 Help: A link to learn more about Electron.
 Context Menu
 Right-click anywhere in the application to open a context menu that provides quick access to file and folder scanning options.
-
-Development
-If you want to contribute to this project or modify it for your own needs, follow these steps:
-
-Clone the Repository:
-
-bash
-Copy code
-git clone https://github.com/madrasa7/VTScan.git
-cd VTScan
-Install Dependencies:
-
-bash
-Copy code
-npm install
-Make Your Changes:
-
-Make any changes you want in the source code. The main logic resides in the main.js and renderer.js files.
-
-Run the Application:
-
-Use the npm start command to test your changes.
 
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
