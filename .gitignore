@@ -1,4 +1,5 @@
 node_modules
 out
+.node-persist
 .env
 VTScan-win32-x64

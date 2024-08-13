@@ -2,7 +2,8 @@ const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme } = require('elec
 const path = require('path');
 const { api_keys } = require('./data/vt_api_keys.json');
 const { version } = require('./package.json');
-const { dark_mode } = require('./config_vtscan.json');
+const storage = require('node-persist');
+storage.initSync();
 
 require('dotenv').config();
 
@@ -22,10 +23,22 @@ function createWindow() {
 	win.loadFile('index.html');
 }
 
-if (dark_mode == 'true') {
-	nativeTheme.themeSource = 'dark';
-}
+async function getTheme() {
+	const theme = await storage.getItem('theme');
 
+	if (theme) {
+		if (theme == 'dark') {
+			nativeTheme.themeSource = 'dark';
+		}
+		else if (theme == 'light') {
+			nativeTheme.themeSource = 'light';
+		}
+	}
+	else {
+		await storage.setItem('theme', 'dark');
+		nativeTheme.themeSource = 'dark';
+	}
+} getTheme();
 
 app.whenReady().then(() => {
 
