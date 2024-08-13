@@ -1,3 +1,5 @@
+const loadingStep = document.getElementById('loading-step');
+
 function displayResults(attributes, fileName, fileSection, file = undefined) {
 
     const { last_analysis_stats, last_analysis_results } = attributes;

@@ -9,7 +9,6 @@ require('./modules/contextMenu');
 require('./modules/events');
 
 const resultsContainer = document.getElementById('results');
-const loadingStep = document.getElementById('loading-step');
 
 var filesLength = 0;
 var fileCounter = 1;
