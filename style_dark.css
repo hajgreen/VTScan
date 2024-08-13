@@ -19,7 +19,9 @@ body {
 }
 
 .accordion-body {
-  background-color: rgb(40, 40, 40);
+  background-color: rgb(53, 53, 53);
+  width: 100%;
+  margin: 0;
 }
 
 .card {
@@ -28,25 +30,41 @@ body {
   border: 0;
 }
 
+.accordion {
+  --bs-accordion-btn-color: black;
+  --bs-accordion-border-color: "";
+  --bs-accordion-btn-icon: "";
+  --bs-accordion-btn-active-icon: "";
+  --bs-accordion-bg: "";
+}
+
 .accordion-button::after {
-  color: white !important;
+  content: url("./data/img/chevron-down.svg");
 }
 
 .accordion-button {
-  border: 0 !important;
-  background-color: rgb(171, 171, 171);
+  border: 1px solid #555555 !important;
+  color: rgb(212, 212, 212);
+  background-color: rgb(37, 37, 37);
+}
+
+.accordion-button:active {
+  border: 1px solid #555555 !important;
+  color: white;
+  background-color: rgb(37, 37, 37);
+}
+
+.accordion-button:not(.collapsed) {
+  color: rgb(242, 242, 242);
+  background-color: rgb(56, 56, 56);
 }
 
 hr {
-  border: 1px solid rgb(130, 130, 130) !important;
+  border-bottom: 1px solid rgb(130, 130, 130) !important;
 }
 
 #loading {
   background-color: rgb(26, 26, 26);
-}
-
-.accordion-button:not(.collapsed) {
-  background-color: rgb(185, 185, 185);
 }
 
 h1,
