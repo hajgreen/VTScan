@@ -1,4 +1,10 @@
 const resultsContainer = document.getElementById('results');
+const { ipcRenderer } = require('electron');
+
+// Listen for the 'handle-file' event from the main process
+ipcRenderer.on('handle-file', (event, file) => {
+    handleFileContextMenu(file);
+});
 
 // Function برای پردازش فایل‌های انتخابی
 async function handleMultipleFiles(files) {
@@ -21,6 +27,45 @@ async function handleMultipleFiles(files) {
 
     ShowLoading(false);
 }
+
+async function handleFileContextMenu({ fileName, fileSize, fileData }) {
+    const maxFileSize = 650 * 1024 * 1024;
+
+    if (fileSize > maxFileSize) {
+        alert('File size exceeds the 650 MB limit.');
+        document.getElementById('results').innerHTML = "";
+        return;
+    }
+
+    ShowLoading(true);
+
+    const fileSection = document.createElement('div');
+    fileSection.className = 'file-section';
+    document.getElementById('results').appendChild(fileSection);
+
+    const blob = new Blob([fileData]);
+
+    const reader = new FileReader();
+    reader.onload = function () {
+        const fileBuffer = new Uint8Array(reader.result);
+
+        const worker = new Worker('./modules/worker.js');
+        worker.postMessage({ fileData: fileBuffer.buffer });
+
+        worker.onmessage = async function (event) {
+            const hash = event.data;
+            fileSection.innerHTML += `<p>File Hash (SHA-1): ${hash}</p>`;
+            await checkFileHash(hash, fileName, fileSection, { size: fileSize });
+        };
+
+        worker.onerror = function (error) {
+            console.error('Worker error:', error);
+        };
+    };
+    reader.readAsArrayBuffer(blob);
+}
+
+// 
 
 async function handleFile(file) {
     const maxFileSize = 650 * 1024 * 1024;

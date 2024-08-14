@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme } = require('electron');
 const { api_keys } = require('./data/vt_api_keys.json');
 const { version } = require('./package.json');
+const fs = require('fs');
 const path = require('path');
 const storage = require('node-persist');
 storage.initSync();
@@ -21,6 +22,33 @@ function createWindow() {
 	});
 
 	win.loadFile('index.html');
+
+	// After the window has loaded, send the file path to the renderer process
+	win.webContents.on('did-finish-load', () => {
+		if (process.argv.length > 1) {
+			const filePath = process.argv[1];
+			sendFileToRenderer(win, filePath);
+		}
+	});
+}
+
+function sendFileToRenderer(mainWindow, filePath) {
+	if (fs.existsSync(filePath)) {
+		const stats = fs.statSync(filePath);
+
+		if (stats.isFile()) {
+			const fileName = path.basename(filePath);
+			const fileSize = stats.size;
+			const fileData = fs.readFileSync(filePath);
+
+			mainWindow.webContents.send('handle-file', { fileName, fileSize, fileData });
+		} else if (stats.isDirectory()) {
+			console.log("The path is a directory, not a file.");
+			// Handle the case where the path is a directory, if needed
+		}
+	} else {
+		console.error("File or directory does not exist.");
+	}
 }
 
 async function getTheme() {
@@ -108,7 +136,27 @@ app.whenReady().then(() => {
 		const menu = Menu.buildFromTemplate(template);
 		menu.popup(BrowserWindow.fromWebContents(event.sender));
 	});
+
+	app.on('open-file', (event, path) => {
+		event.preventDefault();
+		if (win) {
+			win.webContents.send('file-path', filePath);
+		}
+	});
+
+	// Listen for file-path event from the context menu
+	ipcMain.on('file-path', (event, filePath) => {
+		if (fs.existsSync(filePath)) {
+			const file = {
+				name: path.basename(filePath),
+				size: fs.statSync(filePath).size,
+				path: filePath
+			};
+			event.sender.send('handle-file', file);
+		}
+	});
 });
+
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {

@@ -72,6 +72,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
         else {
             const errorDetails = await response.json();
             fileSection.innerHTML += `<p>Error checking file hash: ${errorDetails.error.message}</p>`;
+            ShowLoading(false);
         }
     } catch (error) {
         fileSection.innerHTML += `<p>Network or fetch error: ${error.message}</p>`;
