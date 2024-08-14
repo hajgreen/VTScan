@@ -110,7 +110,7 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }) {
 
         worker.onmessage = async function (event) {
             const hash = event.data;
-            fileSection.innerHTML += `<p>File Hash (SHA-1): ${hash}</p>`;
+            fileSection.innerHTML += `<p>File Hash (SHA-256): ${hash}</p>`;
             await checkFileHash(hash, fileName, fileSection, { size: fileSize });
         };
 
@@ -148,7 +148,7 @@ async function handleFile(file) {
 
         worker.onmessage = async function (event) {
             const hash = event.data;
-            fileSection.innerHTML += `<p>File Hash (SHA-1): ${hash}</p>`;
+            fileSection.innerHTML += `<p>File Hash (SHA-256): ${hash}</p>`;
             await checkFileHash(hash, fileName, fileSection, file);
         };
 
