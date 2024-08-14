@@ -1,10 +1,17 @@
 const resultsContainer = document.getElementById('results');
+const fs = require('fs');
+const path = require('path');
 const { ipcRenderer } = require('electron');
 
 // Listen for the 'handle-file' event from the main process
 ipcRenderer.on('handle-file', (event, file) => {
     handleFileContextMenu(file);
 });
+// Listen for the 'handle-folder' event from the main process
+ipcRenderer.on('handle-folder', (event, folderPath) => {
+    handleFolderContextMenu(folderPath);
+});
+
 
 // Function برای پردازش فایل‌های انتخابی
 async function handleMultipleFiles(files) {
@@ -28,7 +35,54 @@ async function handleMultipleFiles(files) {
     ShowLoading(false);
 }
 
+
+async function handleFolderContextMenu(folderPath) {
+    if (!fs.existsSync(folderPath)) {
+        console.error("Folder does not exist.");
+        return;
+    }
+
+    const stats = fs.statSync(folderPath);
+
+    if (!stats.isDirectory()) {
+        console.error("The path is not a directory.");
+        return;
+    }
+
+    resultsContainer.innerHTML = "";
+
+    const files = fs.readdirSync(folderPath);
+
+    for (const file of files) {
+        const filePath = path.join(folderPath, file);
+        const fileStats = fs.statSync(filePath);
+
+        if (fileStats.isFile()) {
+            // خواندن محتوای فایل به عنوان یک Buffer
+            const fileData = fs.readFileSync(filePath);
+
+            // ایجاد یک Blob از داده‌های فایل
+            const blob = new Blob([fileData]);
+
+            // ایجاد یک شیء File معتبر از Web API
+            const fileObject = new File([blob], path.basename(filePath), {
+                type: '', // MIME type می‌تواند اضافه شود اگر نیاز بود
+                lastModified: fileStats.mtimeMs,
+            });
+
+            // فراخوانی تابع handleFile برای پردازش فایل
+            await handleFile(fileObject);
+        } else if (fileStats.isDirectory()) {
+            console.log(`Skipping nested directory: ${filePath}`);
+            // اگر می‌خواهید پوشه‌های تو در تو را هم پردازش کنید، می‌توانید
+            // به صورت بازگشتی handleFolderContextMenu را فراخوانی کنید
+        }
+    }
+}
+
+
 async function handleFileContextMenu({ fileName, fileSize, fileData }) {
+
     const maxFileSize = 650 * 1024 * 1024;
 
     if (fileSize > maxFileSize) {
@@ -37,11 +91,13 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }) {
         return;
     }
 
+    resultsContainer.innerHTML = "";
+
     ShowLoading(true);
 
     const fileSection = document.createElement('div');
     fileSection.className = 'file-section';
-    document.getElementById('results').appendChild(fileSection);
+    resultsContainer.appendChild(fileSection);
 
     const blob = new Blob([fileData]);
 
@@ -81,7 +137,7 @@ async function handleFile(file) {
     const fileName = file.name;
     const fileSection = document.createElement('div');
     fileSection.className = 'file-section';
-    document.getElementById('results').appendChild(fileSection);
+    resultsContainer.appendChild(fileSection);
 
     const reader = new FileReader();
     reader.onload = function () {

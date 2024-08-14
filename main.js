@@ -7,8 +7,10 @@ const Store = require('electron-store');
 
 require('dotenv').config();
 
+var win;
+
 function createWindow() {
-	const win = new BrowserWindow({
+	win = new BrowserWindow({
 		width: 1024,
 		height: 768,
 		minWidth: 650,
@@ -16,7 +18,8 @@ function createWindow() {
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
 			nodeIntegration: true,
-			contextIsolation: false
+			contextIsolation: false,
+			enableRemoteModule: false,
 		}
 	});
 
@@ -24,14 +27,15 @@ function createWindow() {
 
 	// After the window has loaded, send the file path to the renderer process
 	win.webContents.on('did-finish-load', () => {
-		if (process.argv.length > 1) {
-			const filePath = process.argv[1];
+		if (process.argv.length >= 1) {
+			const filePath = process.argv[1].replace("--file=", "");
 			sendFileToRenderer(win, filePath);
 		}
 	});
 }
 
 function sendFileToRenderer(mainWindow, filePath) {
+
 	if (fs.existsSync(filePath)) {
 		const stats = fs.statSync(filePath);
 
@@ -71,10 +75,40 @@ async function getTheme() {
 
 app.whenReady().then(() => {
 
+	const gotTheLock = app.requestSingleInstanceLock();
+
+	if (!gotTheLock) {
+		app.quit();
+		return;
+	}
+
+	app.on('second-instance', (event, commandLine, workingDirectory, additionalData) => {
+		if (win) {
+			if (win.isMinimized()) win.restore();
+			win.focus();
+		}
+
+		const fileArgIndex = commandLine.findIndex(arg => arg.startsWith('--file='));
+		const folderArgIndex = commandLine.findIndex(arg => arg.startsWith('--folder='));
+
+		if (fileArgIndex !== -1) {
+			if (process.argv.length > 1) {
+				const filePath = commandLine[1].replace("--file=", "");
+				sendFileToRenderer(win, filePath);
+			}
+		}
+		else if (folderArgIndex !== -1) {
+			if (process.argv.length > 1) {
+				const folderPath = commandLine[1].replace("--folder=", "");
+				win.webContents.send('handle-folder', folderPath);
+			}
+		}
+	});
+
 	createWindow();
 
 	app.on('activate', () => {
-		if (BrowserWindow.getAllWindows().length === 0) {
+		if (win === null) {
 			createWindow();
 		}
 	});
