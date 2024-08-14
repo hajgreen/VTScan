@@ -27,9 +27,21 @@ function createWindow() {
 
 	// After the window has loaded, send the file path to the renderer process
 	win.webContents.on('did-finish-load', () => {
+
+		const fileArgIndex = process.argv.findIndex(arg => arg.startsWith('--file='));
+		const folderArgIndex = process.argv.findIndex(arg => arg.startsWith('--folder='));
+
 		if (process.argv.length >= 1) {
-			const filePath = process.argv[1].replace("--file=", "");
-			sendFileToRenderer(win, filePath);
+
+			if (fileArgIndex !== -1) {
+				const filePath = process.argv[1].replace("--file=", "");
+				sendFileToRenderer(win, filePath);
+			}
+			else if (folderArgIndex !== -1) {
+				const folderPath = process.argv[1].replace("--folder=", "");
+				win.webContents.send('handle-folder', folderPath);
+			}
+
 		}
 	});
 }

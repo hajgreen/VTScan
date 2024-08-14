@@ -65,7 +65,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
                 ShowLoading(false);
             }
             else {
-                fileSection.innerHTML += `<p>File is larger than 32MB and cannot be uploaded.</p>`;
+                fileSection.innerHTML += `<p>File not found in VirusTotal database and File is larger than 32MB cannot be uploaded..</p>`;
                 ShowLoading(false);
             }
         }

@@ -206,7 +206,7 @@ body {
   display: grid;
   grid-template-columns: auto auto;
   grid-gap: 10px;
-  margin-bottom: 42px;
+  margin-bottom: 22px;
 }
 
 .main-info p {
