@@ -18,21 +18,74 @@ dropArea.addEventListener('dragleave', () => {
 
 dropArea.addEventListener('drop', async (event) => {
     resultsContainer.innerHTML = "";
-
     event.preventDefault();
-    dropArea.style.background = '';
+    dropArea.style.background = ''; // بازگشت به رنگ اولیه
 
-    const files = event.dataTransfer.files;
-    if (files.length > 0) {
+    const items = event.dataTransfer.items;
 
-        if (files[0].type != "application/octet-stream" && files[0].type != "") {
-            await handleMultipleFiles(files);
-        }
-        else {
-            alert("This is file or folder not support (please add files or folder with button)!");
+    resultsContainer.innerHTML += `
+		<div class="result-header">
+			<h4>Result</h4>
+			<h5 style="margin-bottom: 20px;">Files count: ${items.length}</h5>
+		</div>
+	`;
+
+    for (let i = 0; i < items.length; i++) {
+        let item = items[i];
+
+        if (item.webkitGetAsEntry) {
+            let entry = item.webkitGetAsEntry();
+            if (entry.isDirectory) {
+                // اگر آیتم پوشه است، فایل‌های درون آن را پردازش می‌کنیم
+                await processDirectory(entry);
+            } else {
+                // اگر آیتم فایل است، به صورت معمولی پردازش می‌کنیم
+                let file = item.getAsFile();
+                if (file) {
+                    await handleFile(file);
+                }
+            }
+        } else {
+            // مرورگرهایی که از webkitGetAsEntry پشتیبانی نمی‌کنند
+            let file = item.getAsFile();
+            if (file) {
+                await handleFile(file);
+            }
         }
     }
 });
+
+// تابع برای پردازش پوشه
+async function processDirectory(directoryEntry) {
+
+    resultsContainer.innerHTML = "";
+
+    const reader = directoryEntry.createReader();
+    const entries = await new Promise((resolve, reject) => {
+        reader.readEntries((entries) => resolve(entries), (err) => reject(err));
+    });
+
+    resultsContainer.innerHTML += `
+		<div class="result-header">
+			<h4>Result</h4>
+			<h5 style="margin-bottom: 20px;">Files count: ${entries.length}</h5>
+		</div>
+	`;
+
+    for (let entry of entries) {
+        if (entry.isFile) {
+            // اگر آیتم فایل است
+            const file = await new Promise((resolve, reject) => {
+                entry.file((file) => resolve(file), (err) => reject(err));
+            });
+            await handleFile(file);
+        } else if (entry.isDirectory) {
+            // اگر آیتم پوشه است، به صورت بازگشتی پردازش می‌کنیم
+            await processDirectory(entry);
+        }
+    }
+}
+
 
 // Event listener برای انتخاب فایل از طریق دکمه
 fileSelectButton.addEventListener('click', () => {
