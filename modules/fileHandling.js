@@ -31,6 +31,8 @@ async function handleFile(file) {
         return;
     }
 
+    ShowLoading(true);
+
     const fileName = file.name;
     const fileSection = document.createElement('div');
     fileSection.className = 'file-section';
