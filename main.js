@@ -3,8 +3,7 @@ const { api_keys } = require('./data/vt_api_keys.json');
 const { version } = require('./package.json');
 const fs = require('fs');
 const path = require('path');
-const storage = require('node-persist');
-storage.initSync();
+const Store = require('electron-store');
 
 require('dotenv').config();
 
@@ -52,7 +51,9 @@ function sendFileToRenderer(mainWindow, filePath) {
 }
 
 async function getTheme() {
-	const theme = await storage.getItem('theme');
+
+	const store = new Store();
+	const theme = store.get('theme');
 
 	if (theme) {
 		if (theme == 'dark') {
@@ -63,7 +64,7 @@ async function getTheme() {
 		}
 	}
 	else {
-		await storage.setItem('theme', 'dark');
+		await store.set('theme', 'dark');
 		nativeTheme.themeSource = 'dark';
 	}
 } getTheme();

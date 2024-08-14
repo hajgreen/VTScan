@@ -16,7 +16,7 @@
     "@electron-forge/maker-squirrel": "6.4.1",
     "@electron-forge/maker-zip": "6.4.1",
     "dotenv": "^16.4.5",
-    "node-persist": "^4.0.3"
+    "electron-store": "^8.2.0"
   },
   "devDependencies": {
     "@electron/packager": "^18.3.3",

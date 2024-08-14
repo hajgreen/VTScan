@@ -1,5 +1,5 @@
-const storage = require('node-persist');
-storage.initSync();
+const Store = require('electron-store');
+const store = new Store();
 
 //dark mode
 function isStyleSheetLoaded(href) {
@@ -23,7 +23,7 @@ async function change_mode(href = 'style_dark.css') {
                 document.getElementById("light-mode-icon").style.display = "none";
                 document.getElementById("dark-mode-text").innerText = "Dark mode";
 
-                await storage.updateItem("theme", "light")
+                store.set('theme', 'light');
 
                 links[i].parentNode.removeChild(links[i]);
                 return;
@@ -40,13 +40,13 @@ async function change_mode(href = 'style_dark.css') {
         document.getElementById("dark-mode-icon").style.display = "none";
         document.getElementById("dark-mode-text").innerText = "Light mode";
 
-        await storage.updateItem("theme", "dark")
+        store.set('theme', 'dark');
     }
 }
 
 async function setTheme() {
 
-    const theme = await storage.getItem('theme');
+    const theme = store.get('theme');
 
     if (theme == "dark") {
         const link = document.createElement('link');
