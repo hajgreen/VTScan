@@ -1,4 +1,4 @@
-const { change_mode } = require('./modules/darkMode');
+const { change_mode } = require('./modules/theme');
 const { getApiKey, checkFileHash } = require('./modules/virusTotal');
 const { handleFile, handleMultipleFiles } = require('./modules/fileHandling');
 const { uploadFile } = require('./modules/apiUtils');
