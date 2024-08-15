@@ -8,6 +8,7 @@ const Store = require('electron-store');
 require('dotenv').config();
 
 var win;
+var arrEnable = true;
 var arrFiles = [];
 var arrFolders = [];
 
@@ -55,6 +56,8 @@ function createWindow() {
 					await win.webContents.send('handle-folder', arrFolders[i]);
 				}
 			}
+
+			arrEnable = false;
 		}
 	});
 }
@@ -110,11 +113,23 @@ app.whenReady().then(() => {
 
 			if (fileArgIndex == "--file=") {
 				const filePath = commandLine[1].slice(7);
-				arrFiles.push(filePath);
+
+				if (arrEnable) {
+					arrFiles.push(filePath);
+				}
+				else {
+					await win.webContents.send('handle-file', { pathFile: PathToFile(filePath), fileCount: 0 });
+				}
 			}
 			else if (folderArgIndex == "--folder=") {
 				const folderPath = commandLine[1].slice(9);
-				arrFolders.push(folderPath);
+
+				if (arrEnable) {
+					arrFolders.push(folderPath);
+				}
+				else {
+					await win.webContents.send('handle-folder', folderPath);
+				}
 			}
 		}
 	});
