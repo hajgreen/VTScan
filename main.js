@@ -46,7 +46,7 @@ function createWindow() {
 	});
 }
 
-function sendFileToRenderer(mainWindow, filePath) {
+async function sendFileToRenderer(mainWindow, filePath) {
 
 	if (fs.existsSync(filePath)) {
 		const stats = fs.statSync(filePath);
@@ -56,8 +56,9 @@ function sendFileToRenderer(mainWindow, filePath) {
 			const fileSize = stats.size;
 			const fileData = fs.readFileSync(filePath);
 
-			mainWindow.webContents.send('handle-file', { fileName, fileSize, fileData });
-		} else if (stats.isDirectory()) {
+			await mainWindow.webContents.send('handle-file', { fileName, fileSize, fileData });
+		}
+		else if (stats.isDirectory()) {
 			console.log("The path is a directory, not a file.");
 			// Handle the case where the path is a directory, if needed
 		}
@@ -94,23 +95,22 @@ app.whenReady().then(() => {
 		return;
 	}
 
-	app.on('second-instance', (event, commandLine, workingDirectory, additionalData) => {
+	app.on('second-instance', async (event, commandLine) => {
 		if (win) {
 			if (win.isMinimized()) win.restore();
 			win.focus();
 		}
 
-		const fileArgIndex = commandLine[1].slice(0, 7);
-		const folderArgIndex = commandLine[1].slice(0, 9);
+		if (commandLine.length >= 2) {
 
-		if (fileArgIndex == "--file=") {
-			if (commandLine.length >= 1) {
+			const fileArgIndex = commandLine[1].slice(0, 7);
+			const folderArgIndex = commandLine[1].slice(0, 9);
+
+			if (fileArgIndex == "--file=") {
 				const filePath = commandLine[1].slice(7);
-				sendFileToRenderer(win, filePath);
+				await sendFileToRenderer(win, filePath);
 			}
-		}
-		else if (folderArgIndex == "--folder=") {
-			if (commandLine.length >= 1) {
+			else if (folderArgIndex == "--folder=") {
 				const folderPath = commandLine[1].slice(9);
 				win.webContents.send('handle-folder', folderPath);
 			}

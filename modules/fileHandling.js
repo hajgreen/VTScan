@@ -4,9 +4,8 @@ const path = require('path');
 const { ipcRenderer } = require('electron');
 
 // Listen for the 'handle-file' event from the main process
-ipcRenderer.on('handle-file', (event, file) => {
-    handleFileContextMenu(file);
-    console.log(file)
+ipcRenderer.on('handle-file', async (event, file) => {
+    handleFileContextMenu(await file);
 });
 // Listen for the 'handle-folder' event from the main process
 ipcRenderer.on('handle-folder', (event, folderPath) => {
