@@ -109,7 +109,7 @@ app.whenReady().then(() => {
 				sendFileToRenderer(win, filePath);
 			}
 		}
-		else if (folderArgIndex !== "--folder=") {
+		else if (folderArgIndex == "--folder=") {
 			if (commandLine.length >= 1) {
 				const folderPath = commandLine[1].slice(9);
 				win.webContents.send('handle-folder', folderPath);
