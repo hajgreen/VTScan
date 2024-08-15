@@ -56,9 +56,10 @@ function createWindow() {
 					await win.webContents.send('handle-folder', arrFolders[i]);
 				}
 			}
-
-			arrEnable = false;
 		}
+
+
+		arrEnable = false;
 	});
 }
 

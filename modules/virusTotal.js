@@ -47,7 +47,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
                 uploadButton.classList.add('btn');
                 uploadButton.classList.add('btn-primary');
                 uploadButton.textContent = 'Upload to VirusTotal';
-                uploadButton.onclick = () => { uploadFile(file, apiKey, fileSection); this.disabled = true; }
+                uploadButton.onclick = () => { uploadFile(file, fileSection); this.disabled = true; }
                 fileSection.appendChild(uploadButton);
 
                 // ساختن نوار پیشرفت

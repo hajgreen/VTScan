@@ -114,6 +114,9 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }, fileCount
 
     const blob = new Blob([fileData]);
 
+    // Create a new File object
+    const file = new File([blob], fileName, { type: "application/octet-stream" });
+
     const reader = new FileReader();
     reader.onload = function () {
         const fileBuffer = new Uint8Array(reader.result);
@@ -124,7 +127,7 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }, fileCount
         worker.onmessage = async function (event) {
             const hash = event.data;
             fileSection.innerHTML += `<p>File Hash (SHA-256): ${hash}</p>`;
-            await checkFileHash(hash, fileName, fileSection, { size: fileSize });
+            await checkFileHash(hash, fileName, fileSection, file);
         };
 
         worker.onerror = function (error) {
