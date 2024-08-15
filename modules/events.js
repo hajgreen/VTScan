@@ -23,13 +23,6 @@ dropArea.addEventListener('drop', async (event) => {
 
     const items = event.dataTransfer.items;
 
-    resultsContainer.innerHTML += `
-		<div class="result-header">
-			<h4>Result</h4>
-			<h5 style="margin-bottom: 20px;">Files count: ${items.length}</h5>
-		</div>
-	`;
-
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
 
@@ -64,13 +57,6 @@ async function processDirectory(directoryEntry) {
     const entries = await new Promise((resolve, reject) => {
         reader.readEntries((entries) => resolve(entries), (err) => reject(err));
     });
-
-    resultsContainer.innerHTML += `
-		<div class="result-header">
-			<h4>Result</h4>
-			<h5 style="margin-bottom: 20px;">Files count: ${entries.length}</h5>
-		</div>
-	`;
 
     for (let entry of entries) {
         if (entry.isFile) {
@@ -125,13 +111,6 @@ folderInput.addEventListener('change', async (event) => {
     }
 
     filesLength = counter;
-
-    resultsContainer.innerHTML += `
-		<div class="result-header">
-			<h4>Result</h4>
-			<h5 style="margin-bottom: 20px;">Files count: ${counter}</h5>
-		</div>
-	`;
 
     for (let file of files) {
         const ext = path.extname(file.name).toLowerCase();

@@ -78,6 +78,8 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
         fileSection.innerHTML += `<p class="text-danger">Network or fetch error: ${error.message}</p>`;
         ShowLoading(false);
     }
+
+    document.getElementById("file-counter-result").innerText = `Files count: ${resultsContainer.childElementCount}`;
 }
 
 module.exports = { getApiKey, checkFileHash };

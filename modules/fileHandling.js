@@ -22,13 +22,6 @@ async function handleMultipleFiles(files) {
     fileCounter = 0;
     filesLength = files.length;
 
-    resultsContainer.innerHTML += `
-		<div class="result-header">
-			<h4>Result</h4>
-			<h5 style="margin-bottom: 20px;">Files count: ${files.length}</h5>
-		</div>
-	`;
-
     for (let file of files) {
         fileCounter += 1;
         await handleFile(file);
