@@ -8,8 +8,8 @@ ipcRenderer.on('handle-file', async (event, file) => {
     handleFileContextMenu(await file);
 });
 // Listen for the 'handle-folder' event from the main process
-ipcRenderer.on('handle-folder', (event, folderPath) => {
-    handleFolderContextMenu(folderPath);
+ipcRenderer.on('handle-folder', async (event, folderPath) => {
+    handleFolderContextMenu(await folderPath);
 });
 
 var nowTime = performance.now();
@@ -81,9 +81,7 @@ async function handleFolderContextMenu(folderPath) {
             // فراخوانی تابع handleFile برای پردازش فایل
             await handleFile(fileObject);
         } else if (fileStats.isDirectory()) {
-            console.log(`Skipping nested directory: ${filePath}`);
-            // اگر می‌خواهید پوشه‌های تو در تو را هم پردازش کنید، می‌توانید
-            // به صورت بازگشتی handleFolderContextMenu را فراخوانی کنید
+            // handleFolderContextMenu(filePath);
         }
     }
 }

@@ -9,6 +9,7 @@ require('dotenv').config();
 
 var win;
 var arrFiles = [];
+var arrFolders = [];
 
 function createWindow() {
 	win = new BrowserWindow({
@@ -36,11 +37,11 @@ function createWindow() {
 
 			if (fileArgIndex == "--file=") {
 				const filePath = process.argv[1].slice(7);
-				sendFileToRenderer(win, filePath);
+				arrFiles.push(filePath);
 			}
 			else if (folderArgIndex == "--folder=") {
 				const folderPath = process.argv[1].slice(9);
-				win.webContents.send('handle-folder', folderPath);
+				arrFolders.push(folderPath);
 			}
 
 			if (arrFiles.length > 0) {
@@ -48,35 +49,19 @@ function createWindow() {
 					await win.webContents.send('handle-file', PathToFile(arrFiles[i]));
 				}
 			}
+
+			if (arrFolders.length > 0) {
+				for (let i = 0; i < arrFolders.length; i++) {
+					await win.webContents.send('handle-folder', arrFolders[i]);
+				}
+			}
 		}
 	});
-}
-
-async function sendFileToRenderer(mainWindow, filePath) {
-
-	if (fs.existsSync(filePath)) {
-		const stats = fs.statSync(filePath);
-
-		if (stats.isFile()) {
-			const fileName = path.basename(filePath);
-			const fileSize = stats.size;
-			const fileData = fs.readFileSync(filePath);
-
-			await mainWindow.webContents.send('handle-file', { fileName, fileSize, fileData });
-		}
-		else if (stats.isDirectory()) {
-			console.log("The path is a directory, not a file.");
-			// Handle the case where the path is a directory, if needed
-		}
-	} else {
-		console.error("File or directory does not exist.");
-	}
 }
 
 function PathToFile(filePath) {
 
 	const stats = fs.statSync(filePath);
-
 	const fileName = path.basename(filePath);
 	const fileSize = stats.size;
 	const fileData = fs.readFileSync(filePath);
@@ -129,7 +114,7 @@ app.whenReady().then(() => {
 			}
 			else if (folderArgIndex == "--folder=") {
 				const folderPath = commandLine[1].slice(9);
-				win.webContents.send('handle-folder', folderPath);
+				arrFolders.push(folderPath);
 			}
 		}
 	});
