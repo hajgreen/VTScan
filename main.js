@@ -58,7 +58,7 @@ function createWindow() {
 			}
 		}
 
-
+		process.argv = [];
 		arrEnable = false;
 	});
 }
