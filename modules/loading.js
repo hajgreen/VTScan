@@ -8,6 +8,11 @@ function ShowLoading(bool) {
         document.body.style.overflowY = "auto";
         document.getElementById('loading').style.display = 'none';
     }
+
+    setTimeout(() => {
+        document.body.style.overflowY = "auto";
+        document.getElementById('loading').style.display = 'none';
+    }, 10000);
 }
 
 module.exports = { ShowLoading };

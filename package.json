@@ -5,7 +5,7 @@
   "keywords": [],
   "main": "./main.js",
   "version": "1.5.3",
-  "author": "madr",
+  "author": "Mohammad Rasabakhsh",
   "scripts": {
     "start": "electron ."
   },
@@ -20,6 +20,6 @@
   },
   "devDependencies": {
     "@electron/packager": "^18.3.3",
-    "electron": "31.3.1"
+    "electron": "31.4.0"
   }
 }

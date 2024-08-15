@@ -28,17 +28,17 @@ function createWindow() {
 	// After the window has loaded, send the file path to the renderer process
 	win.webContents.on('did-finish-load', () => {
 
-		const fileArgIndex = process.argv.findIndex(arg => arg.startsWith('--file='));
-		const folderArgIndex = process.argv.findIndex(arg => arg.startsWith('--folder='));
+		if (process.argv.length >= 2) {
 
-		if (process.argv.length >= 1) {
+			const fileArgIndex = process.argv[1].slice(0, 7);
+			const folderArgIndex = process.argv[1].slice(0, 9);
 
-			if (fileArgIndex !== -1) {
-				const filePath = process.argv[1].replace("--file=", "");
+			if (fileArgIndex == "--file=") {
+				const filePath = process.argv[1].slice(7);
 				sendFileToRenderer(win, filePath);
 			}
-			else if (folderArgIndex !== -1) {
-				const folderPath = process.argv[1].replace("--folder=", "");
+			else if (folderArgIndex == "--folder=") {
+				const folderPath = process.argv[1].slice(9);
 				win.webContents.send('handle-folder', folderPath);
 			}
 
@@ -66,7 +66,7 @@ function sendFileToRenderer(mainWindow, filePath) {
 	}
 }
 
-async function getTheme() {
+function getTheme() {
 
 	const store = new Store();
 	const theme = store.get('theme');
@@ -80,7 +80,7 @@ async function getTheme() {
 		}
 	}
 	else {
-		await store.set('theme', 'dark');
+		store.set('theme', 'dark');
 		nativeTheme.themeSource = 'dark';
 	}
 } getTheme();
@@ -100,18 +100,18 @@ app.whenReady().then(() => {
 			win.focus();
 		}
 
-		const fileArgIndex = commandLine.findIndex(arg => arg.startsWith('--file='));
-		const folderArgIndex = commandLine.findIndex(arg => arg.startsWith('--folder='));
+		const fileArgIndex = commandLine[1].slice(0, 7);
+		const folderArgIndex = commandLine[1].slice(0, 9);
 
-		if (fileArgIndex !== -1) {
-			if (process.argv.length > 1) {
-				const filePath = commandLine[1].replace("--file=", "");
+		if (fileArgIndex == "--file=") {
+			if (commandLine.length >= 1) {
+				const filePath = commandLine[1].slice(7);
 				sendFileToRenderer(win, filePath);
 			}
 		}
-		else if (folderArgIndex !== -1) {
-			if (process.argv.length > 1) {
-				const folderPath = commandLine[1].replace("--folder=", "");
+		else if (folderArgIndex !== "--folder=") {
+			if (commandLine.length >= 1) {
+				const folderPath = commandLine[1].slice(9);
 				win.webContents.send('handle-folder', folderPath);
 			}
 		}

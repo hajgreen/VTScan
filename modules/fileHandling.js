@@ -6,12 +6,14 @@ const { ipcRenderer } = require('electron');
 // Listen for the 'handle-file' event from the main process
 ipcRenderer.on('handle-file', (event, file) => {
     handleFileContextMenu(file);
+    console.log(file)
 });
 // Listen for the 'handle-folder' event from the main process
 ipcRenderer.on('handle-folder', (event, folderPath) => {
     handleFolderContextMenu(folderPath);
 });
 
+var nowTime = performance.now();
 
 // Function برای پردازش فایل‌های انتخابی
 async function handleMultipleFiles(files) {
@@ -37,6 +39,15 @@ async function handleMultipleFiles(files) {
 
 
 async function handleFolderContextMenu(folderPath) {
+
+    if ((performance.now() - nowTime) > 750) {
+        resultsContainer.innerHTML = "";
+        nowTime = performance.now();
+    }
+    else {
+        nowTime = performance.now();
+    }
+
     if (!fs.existsSync(folderPath)) {
         console.error("Folder does not exist.");
         return;
@@ -48,8 +59,6 @@ async function handleFolderContextMenu(folderPath) {
         console.error("The path is not a directory.");
         return;
     }
-
-    resultsContainer.innerHTML = "";
 
     const files = fs.readdirSync(folderPath);
 
@@ -83,6 +92,17 @@ async function handleFolderContextMenu(folderPath) {
 
 async function handleFileContextMenu({ fileName, fileSize, fileData }) {
 
+
+    if ((performance.now() - nowTime) > 750) {
+        resultsContainer.innerHTML = "";
+        nowTime = performance.now();
+    }
+    else {
+        nowTime = performance.now();
+    }
+
+    ShowLoading(true);
+
     const maxFileSize = 650 * 1024 * 1024;
 
     if (fileSize > maxFileSize) {
@@ -90,10 +110,6 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }) {
         document.getElementById('results').innerHTML = "";
         return;
     }
-
-    resultsContainer.innerHTML = "";
-
-    ShowLoading(true);
 
     const fileSection = document.createElement('div');
     fileSection.className = 'file-section';
@@ -124,6 +140,9 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }) {
 // 
 
 async function handleFile(file) {
+
+    ShowLoading(true);
+
     const maxFileSize = 650 * 1024 * 1024;
 
     if (file.size > maxFileSize) {
@@ -132,12 +151,7 @@ async function handleFile(file) {
         return;
     }
 
-    ShowLoading(true);
-
     const fileName = file.name;
-    const fileSection = document.createElement('div');
-    fileSection.className = 'file-section';
-    resultsContainer.appendChild(fileSection);
 
     const reader = new FileReader();
     reader.onload = function () {
@@ -148,7 +162,12 @@ async function handleFile(file) {
 
         worker.onmessage = async function (event) {
             const hash = event.data;
+
+            const fileSection = document.createElement('div');
+            fileSection.className = 'file-section';
+            resultsContainer.appendChild(fileSection);
             fileSection.innerHTML += `<p>File Hash (SHA-256): ${hash}</p>`;
+
             await checkFileHash(hash, fileName, fileSection, file);
         };
 

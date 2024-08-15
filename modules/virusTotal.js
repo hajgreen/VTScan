@@ -38,7 +38,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
         }
         else if (response.status === 404) {
             fileSection.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;
-            fileSection.innerHTML += `<p style="color: red;" id="hash-error">File with hash ${hash} not found in VirusTotal database.</p>`;
+            fileSection.innerHTML += `<p class="text-danger" id="hash-error">File with hash ${hash} not found in VirusTotal database.</p>`;
 
             // ایجاد دکمه آپلود
             if (file.size <= 32 * 1024 * 1024 && file) {
@@ -65,17 +65,18 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
                 ShowLoading(false);
             }
             else {
-                fileSection.innerHTML += `<p>File is larger than 32MB cannot be uploaded.</p>`;
+                fileSection.innerHTML += `<p class="text-danger">File is larger than 32MB cannot be uploaded.</p>`;
                 ShowLoading(false);
             }
         }
         else {
             const errorDetails = await response.json();
-            fileSection.innerHTML += `<p>Error checking file hash: ${errorDetails.error.message}</p>`;
+            fileSection.innerHTML += `<p class="text-danger">Error checking file hash: ${errorDetails.error.message}</p>`;
             ShowLoading(false);
         }
     } catch (error) {
-        fileSection.innerHTML += `<p>Network or fetch error: ${error.message}</p>`;
+        fileSection.innerHTML += `<p class="text-danger">Network or fetch error: ${error.message}</p>`;
+        ShowLoading(false);
     }
 }
 
