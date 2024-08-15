@@ -5,7 +5,8 @@ const { ipcRenderer } = require('electron');
 
 // Listen for the 'handle-file' event from the main process
 ipcRenderer.on('handle-file', async (event, file) => {
-    handleFileContextMenu(await file);
+    const data = await file;
+    handleFileContextMenu(data.pathFile, data.fileCount);
 });
 // Listen for the 'handle-folder' event from the main process
 ipcRenderer.on('handle-folder', async (event, folderPath) => {
@@ -87,8 +88,7 @@ async function handleFolderContextMenu(folderPath) {
 }
 
 
-async function handleFileContextMenu({ fileName, fileSize, fileData }) {
-
+async function handleFileContextMenu({ fileName, fileSize, fileData }, fileCount) {
 
     if ((performance.now() - nowTime) > 750) {
         resultsContainer.innerHTML = "";

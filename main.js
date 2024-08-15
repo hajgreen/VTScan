@@ -46,7 +46,7 @@ function createWindow() {
 
 			if (arrFiles.length > 0) {
 				for (let i = 0; i < arrFiles.length; i++) {
-					await win.webContents.send('handle-file', PathToFile(arrFiles[i]));
+					await win.webContents.send('handle-file', { pathFile: PathToFile(arrFiles[i]), fileCount: arrFiles.length });
 				}
 			}
 
