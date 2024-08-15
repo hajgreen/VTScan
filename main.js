@@ -27,7 +27,7 @@ function createWindow() {
 	win.loadFile('index.html');
 
 	// After the window has loaded, send the file path to the renderer process
-	win.webContents.on('did-finish-load', () => {
+	win.webContents.on('did-finish-load', async () => {
 
 		if (process.argv.length >= 2) {
 
@@ -43,6 +43,11 @@ function createWindow() {
 				win.webContents.send('handle-folder', folderPath);
 			}
 
+			if (arrFiles.length > 0) {
+				for (let i = 0; i < arrFiles.length; i++) {
+					await win.webContents.send('handle-file', PathToFile(arrFiles[i]));
+				}
+			}
 		}
 	});
 }
@@ -128,12 +133,6 @@ app.whenReady().then(() => {
 			}
 		}
 	});
-
-	setTimeout(async () => {
-		for (let i = 0; i < arrFiles.length; i++) {
-			await win.webContents.send('handle-file', PathToFile(arrFiles[i]));
-		}
-	}, 200)
 
 	createWindow();
 
