@@ -8,6 +8,7 @@ const Store = require('electron-store');
 require('dotenv').config();
 
 var win;
+var arrFiles = [];
 
 function createWindow() {
 	win = new BrowserWindow({
@@ -67,6 +68,17 @@ async function sendFileToRenderer(mainWindow, filePath) {
 	}
 }
 
+function PathToFile(filePath) {
+
+	const stats = fs.statSync(filePath);
+
+	const fileName = path.basename(filePath);
+	const fileSize = stats.size;
+	const fileData = fs.readFileSync(filePath);
+
+	return { fileName, fileSize, fileData };
+}
+
 function getTheme() {
 
 	const store = new Store();
@@ -108,7 +120,7 @@ app.whenReady().then(() => {
 
 			if (fileArgIndex == "--file=") {
 				const filePath = commandLine[1].slice(7);
-				await sendFileToRenderer(win, filePath);
+				arrFiles.push(filePath);
 			}
 			else if (folderArgIndex == "--folder=") {
 				const folderPath = commandLine[1].slice(9);
@@ -116,6 +128,12 @@ app.whenReady().then(() => {
 			}
 		}
 	});
+
+	setTimeout(async () => {
+		for (let i = 0; i < arrFiles.length; i++) {
+			await win.webContents.send('handle-file', PathToFile(arrFiles[i]));
+		}
+	}, 200)
 
 	createWindow();
 
