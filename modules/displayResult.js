@@ -28,9 +28,9 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
     fileSection.appendChild(mainData);
 
     mainData.innerHTML += `
-        <div class="engines" style="background-color: ${maliciousAVs > 1 ? "#f44336" : "#00aa00"};">
+        <div class="engines" style="background-color: ${maliciousAVs > 1 ? "#f44336cc" : "#00aa00b0"};">
             <div class="circle">
-                <div class="positives" style="color: ${maliciousAVs > 1 ? "#f44336" : "#00aa00"};">
+                <div class="positives" style="color: ${maliciousAVs > 1 ? "#f44336cc" : "#00aa00b0"};">
                     ${maliciousAVs}
                 </div> 
                 <div class="total">

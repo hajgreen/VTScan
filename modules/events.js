@@ -77,6 +77,10 @@ async function processDirectory(directoryEntry) {
 fileSelectButton.addEventListener('click', () => {
     fileInput.value = null;
     resultsContainer.innerHTML = "";
+    document.getElementById("file-counter-result").innerText = `(0)`;
+    document.getElementById("searchInput").disabled = true;
+    document.getElementById("sortOptions").disabled = true;
+
     fileInput.click();
 });
 
@@ -84,6 +88,10 @@ fileSelectButton.addEventListener('click', () => {
 folderSelectButton.addEventListener('click', () => {
     folderInput.value = null;
     resultsContainer.innerHTML = "";
+    document.getElementById("file-counter-result").innerText = `(0)`;
+    document.getElementById("searchInput").disabled = true;
+    document.getElementById("sortOptions").disabled = true;
+
     folderInput.click();
 });
 

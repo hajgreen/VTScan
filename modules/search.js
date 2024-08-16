@@ -103,28 +103,28 @@ function orderBy(parameter) {
 
         switch (parameter) {
             case 'fileName':
-                const aFileName = aMainInfo.children[0].querySelector('strong');
-                const bFileName = bMainInfo.children[0].querySelector('strong');
+                const aFileName = aMainInfo.children[1].querySelector('strong');
+                const bFileName = bMainInfo.children[1].querySelector('strong');
                 aValue = aFileName ? aFileName.innerText.toLowerCase() : '';
                 bValue = bFileName ? bFileName.innerText.toLowerCase() : '';
                 return aValue.localeCompare(bValue);
             case 'fileSize':
-                const aFileSize = aMainInfo.children[1];
-                const bFileSize = bMainInfo.children[1];
+                const aFileSize = aMainInfo.children[2];
+                const bFileSize = bMainInfo.children[2];
                 aValue = aFileSize ? parseFileSize(aFileSize.innerText) : 0;
                 bValue = bFileSize ? parseFileSize(bFileSize.innerText) : 0;
                 return bValue - aValue; // Descending order
             case 'lastAnalysisDate':
-                const aDateText = aMainInfo.children[2];
-                const bDateText = bMainInfo.children[2];
+                const aDateText = aMainInfo.children[3];
+                const bDateText = bMainInfo.children[3];
                 aValue = aDateText ? parseDate(aDateText.innerText) : new Date(0);
                 bValue = bDateText ? parseDate(bDateText.innerText) : new Date(0);
                 return bValue - aValue; // Descending order
             case 'scanResult':
-                const aScanResultText = aMainInfo.children[0].querySelector('span');
-                const bScanResultText = bMainInfo.children[0].querySelector('span');
-                aValue = aScanResultText ? parseScanResult(aScanResultText.innerText) : 0;
-                bValue = bScanResultText ? parseScanResult(bScanResultText.innerText) : 0;
+                const aScanResult = a.querySelector('.positives');
+                const bScanResult = b.querySelector('.positives');
+                aValue = aScanResult ? parseInt(aScanResult.innerText, 10) : 0;
+                bValue = bScanResult ? parseInt(bScanResult.innerText, 10) : 0;
                 return bValue - aValue; // Descending order
             default:
                 return 0;

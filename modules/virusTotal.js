@@ -80,6 +80,8 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
     }
 
     document.getElementById("file-counter-result").innerText = `(${resultsContainer.childElementCount})`;
+    document.getElementById("searchInput").disabled = false;
+    document.getElementById("sortOptions").disabled = false;
 }
 
 module.exports = { getApiKey, checkFileHash };
