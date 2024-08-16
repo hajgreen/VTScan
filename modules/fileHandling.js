@@ -25,8 +25,6 @@ async function handleMultipleFiles(files) {
 
 async function handleFolderContextMenu(folderPath) {
 
-    ShowLoading(true);
-
     if ((performance.now() - nowTime) > 2000) {
         resultsContainer.innerHTML = "";
         nowTime = performance.now();
@@ -76,8 +74,6 @@ async function handleFolderContextMenu(folderPath) {
 
 
 async function handleFileContextMenu({ fileName, fileSize, fileData }, fileCount) {
-
-    ShowLoading(true);
 
     if ((performance.now() - nowTime) > 3000) {
         resultsContainer.innerHTML = "";
