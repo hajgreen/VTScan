@@ -118,7 +118,7 @@ function displayStreamingResults(attributes, fileName) {
     fileSec.innerHTML += `<p><strong>File Name: </strong> ${fileName}</p>`;
     fileSec.innerHTML += `<p><strong>Scan result: </strong><span style="color:${maliciousAVs > 1 ? "red" : "#4caf50"}; font-size: 18px;">${maliciousAVs} of ${totalAVs}</span></p>`;
 
-    const accordionId = `accordion`;
+    const accordionId = `accordion-${fileName.replace(/\s+/g, '-')}`;
     const accordion = document.createElement('div');
     accordion.className = 'accordion';
     accordion.id = accordionId;
