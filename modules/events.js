@@ -108,8 +108,6 @@ folderInput.addEventListener('change', async (event) => {
         '.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.msc', '.reg', '.inf', '.jar', '.py', ".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz", ".tar.gz", ".tar.bz2", ".tar.xz", ".z", ".lz", ".lzma", ".cab", ".iso", ".tgz", ".tbz2", ".txz", ".wim", ".dmg", ".s7z"
     ];
 
-    fileCounter = 1;
-
     let counter = 0;
     for (let file of files) {
         const ext = path.extname(file.name).toLowerCase();
@@ -118,13 +116,10 @@ folderInput.addEventListener('change', async (event) => {
         }
     }
 
-    filesLength = counter;
-
     for (let file of files) {
         const ext = path.extname(file.name).toLowerCase();
         if (executableExtensions.includes(ext)) {
             await handleFile(file);
-            fileCounter += 1;
         }
     }
 });

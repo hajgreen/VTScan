@@ -1,5 +1,3 @@
-const loadingStep = document.getElementById('loading-step');
-
 function truncateString(str, num) {
     if (str.length <= num) {
         return str;
@@ -17,8 +15,6 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
     const { last_analysis_stats, last_analysis_results } = attributes;
     const totalAVs = last_analysis_stats.harmless + last_analysis_stats.malicious + last_analysis_stats.suspicious + last_analysis_stats.undetected + last_analysis_stats.timeout;
     const maliciousAVs = last_analysis_stats.malicious;
-
-    loadingStep.innerHTML = `${fileCounter} of ${filesLength}`;
 
     const mainInfo = document.createElement('div');
     mainInfo.classList.add("main-info");
@@ -122,7 +118,7 @@ function displayStreamingResults(attributes, fileName) {
     fileSec.innerHTML += `<p><strong>File Name: </strong> ${fileName}</p>`;
     fileSec.innerHTML += `<p><strong>Scan result: </strong><span style="color:${maliciousAVs > 1 ? "red" : "#4caf50"}; font-size: 18px;">${maliciousAVs} of ${totalAVs}</span></p>`;
 
-    const accordionId = `accordion-${fileCounter}`;
+    const accordionId = `accordion`;
     const accordion = document.createElement('div');
     accordion.className = 'accordion';
     accordion.id = accordionId;

@@ -17,12 +17,7 @@ var nowTime = performance.now();
 
 // Function برای پردازش فایل‌های انتخابی
 async function handleMultipleFiles(files) {
-
-    fileCounter = 0;
-    filesLength = files.length;
-
     for (let file of files) {
-        fileCounter += 1;
         await handleFile(file);
     }
 }

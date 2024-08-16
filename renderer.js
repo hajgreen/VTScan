@@ -10,6 +10,3 @@ require('./modules/contextMenu');
 require('./modules/events');
 
 const resultsContainer = document.getElementById('results');
-
-var filesLength = 0;
-var fileCounter = 1;
