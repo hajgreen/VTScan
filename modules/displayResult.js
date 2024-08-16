@@ -40,7 +40,7 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
 
     // نمایش اطلاعات کلی
     mainInfo.innerHTML += `<p>File Hash (SHA-256): ${truncateString(hash, 24)}</p>`;
-    mainInfo.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;
+    mainInfo.innerHTML += `<p>File Name: <strong>${truncateString(fileName, 32)}</strong></p>`;
     mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
     mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;
 
