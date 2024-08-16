@@ -105,3 +105,15 @@ p,
 span {
   color: rgb(198, 198, 198);
 }
+
+#searchInput {
+  color: rgb(215, 215, 215);
+}
+
+#sortOptions {
+  color: rgb(215, 215, 215);
+}
+
+#sortOptions option {
+  background-color: #202020;
+}

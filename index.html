@@ -61,9 +61,21 @@
 		<input type="file" id="file-input" multiple style="display: none;">
 		<input type="file" id="folder-input" webkitdirectory directory style="display: none;">
 
+
 		<div class="result-header">
-			<h4>Result</h4>
-			<h5 style="margin-bottom: 20px;" id="file-counter-result">Files count: 0</h5>
+			<div class="results-header">
+				<span>Results</span>
+				<span id="file-counter-result" class="mb-0">(0)</span>
+			</div>
+			<div>
+				<input type="text" id="searchInput" placeholder="Search for file..." onkeyup="searchFiles()">
+				<select id="sortOptions" onchange="orderBy(this.value)">
+					<option value="fileName">Sort by File Name</option>
+					<option value="fileSize">Sort by File Size</option>
+					<option value="lastAnalysisDate">Sort by Last Analysis Date</option>
+					<option value="scanResult">Sort by Scan Result</option>
+				</select>
+			</div>
 		</div>
 
 		<div id="results">

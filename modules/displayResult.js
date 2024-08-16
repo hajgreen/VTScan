@@ -11,16 +11,16 @@ function displayResults(attributes, fileName, fileSection, file = undefined) {
     const mainInfo = document.createElement('div');
     mainInfo.classList.add("main-info");
 
+    fileSection.innerHTML += `
+        <p><span style="color:${maliciousAVs > 2 ? "#ff3d3d" : "#00a500"}; font-weight: 700; font-size: 32px; margin-left: 4px;">${maliciousAVs} / ${totalAVs}</span></p>
+    `;
+
     fileSection.appendChild(mainInfo);
 
     // نمایش اطلاعات کلی
-    mainInfo.innerHTML += `
-        <p>Scan result:<span style="color:${maliciousAVs > 2 ? "red" : "#00a500"}; font-weight: 700; margin-left: 4px;">${maliciousAVs} of ${totalAVs}</span> <strong> antivirus malicious detected</strong></p>
-    `;
     mainInfo.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;
     mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
     mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;
-    fileSection.innerHTML += `<hr>`;
 
     // ایجاد آکاردیون برای نتایج دقیق آنتی ویروس‌ها
     const accordionId = `accordion-${fileName.replace(/\s+/g, '-')}`;
@@ -32,7 +32,7 @@ function displayResults(attributes, fileName, fileSection, file = undefined) {
     let accordionContent = `
         <div class="accordion-item">
             <h2 class="accordion-header" id="heading-${accordionId}">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${accordionId}" aria-expanded="true" aria-controls="collapse-${accordionId}" style="font-size: 17px !important;">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${accordionId}" aria-expanded="true" aria-controls="collapse-${accordionId}">
                     Read more
                 </button>
             </h2>

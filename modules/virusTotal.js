@@ -79,7 +79,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
         ShowLoading(false);
     }
 
-    document.getElementById("file-counter-result").innerText = `Files count: ${resultsContainer.childElementCount}`;
+    document.getElementById("file-counter-result").innerText = `(${resultsContainer.childElementCount})`;
 }
 
 module.exports = { getApiKey, checkFileHash };

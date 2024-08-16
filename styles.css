@@ -76,9 +76,9 @@ body {
 }
 
 .file-section {
-  margin-bottom: 20px;
-  padding: 20px;
-  padding-bottom: 24px;
+  margin-bottom: 14px;
+  padding: 16px 18px;
+  padding-bottom: 18px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 0 4px #bfbfbf;
@@ -174,9 +174,10 @@ body {
 .accordion-button {
   font-size: 16px !important;
   font-weight: 700;
-  border: 1px solid #a4a4a4 !important;
+  border: 1px solid #cacaca !important;
   border-radius: 4px;
   background-color: #f2f2f2;
+  padding: 10px;
 }
 
 .accordion-button:not(.collapsed) {
@@ -204,9 +205,25 @@ body {
 
 .main-info {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   grid-gap: 10px;
   margin-bottom: 22px;
+}
+
+#searchInput {
+  width: 400px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(61, 61, 61);
+  border-radius: 5px;
+  padding: 6px 10px;
+}
+
+#sortOptions {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(61, 61, 61);
+  border-radius: 5px;
+  padding: 6px 0;
+  margin-left: 4px;
 }
 
 .main-info p {
@@ -217,11 +234,16 @@ body {
   margin-bottom: 10px;
 }
 
+.file-section.hidden {
+  display: none;
+}
+
 .result-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  margin-top: 42px;
+  margin-top: 52px;
 }
 
 .button-dark-mode {
@@ -242,8 +264,33 @@ body {
   height: 24px;
 }
 
+.results-header {
+  font-weight: 700;
+  font-size: 24px;
+}
+
+input:focus-visible,
+select:focus-visible {
+  outline: 1px solid rgb(122, 122, 122);
+}
+
 /* Responsive design for tablets and phones */
-@media (max-width: 768px) {
+@media (max-width: 994px) {
+  #searchInput {
+    width: 100%;
+  }
+
+  #sortOptions {
+    margin: 0;
+    margin-top: 10px;
+    padding: 6px 10px;
+  }
+
+  .result-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
   #av-results {
     display: block;
   }
