@@ -17,7 +17,6 @@ var nowTime = performance.now();
 
 // Function برای پردازش فایل‌های انتخابی
 async function handleMultipleFiles(files) {
-    ShowLoading(true);
 
     fileCounter = 0;
     filesLength = files.length;
@@ -26,8 +25,6 @@ async function handleMultipleFiles(files) {
         fileCounter += 1;
         await handleFile(file);
     }
-
-    ShowLoading(false);
 }
 
 
@@ -91,8 +88,6 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }, fileCount
         nowTime = performance.now();
     }
 
-    ShowLoading(true);
-
     const maxFileSize = 650 * 1024 * 1024;
 
     if (fileSize > maxFileSize) {
@@ -132,8 +127,6 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }, fileCount
 // 
 
 async function handleFile(file) {
-
-    ShowLoading(true);
 
     const maxFileSize = 650 * 1024 * 1024;
 

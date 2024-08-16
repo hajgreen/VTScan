@@ -34,7 +34,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
 
         if (response.ok) {
             const result = await response.json();
-            displayResults(result.data.attributes, fileName, fileSection, file, hash);
+            await displayResults(result.data.attributes, fileName, fileSection, file, hash);
         }
         else if (response.status === 404) {
             fileSection.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;
@@ -61,23 +61,20 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
 											<span id="messageProgessBar-${fileName}"></span>
 										`;
                 fileSection.appendChild(uploadProgress);
-
-                ShowLoading(false);
             }
             else {
                 fileSection.innerHTML += `<p class="text-danger">File is larger than 32MB cannot be uploaded.</p>`;
-                ShowLoading(false);
             }
         }
         else {
             const errorDetails = await response.json();
             fileSection.innerHTML += `<p class="text-danger">Error checking file hash: ${errorDetails.error.message}</p>`;
-            ShowLoading(false);
         }
     } catch (error) {
         fileSection.innerHTML += `<p class="text-danger">Network or fetch error: ${error.message}</p>`;
-        ShowLoading(false);
     }
+
+    ShowLoading(false);
 
     document.getElementById("file-counter-result").innerText = `(${resultsContainer.childElementCount})`;
     document.getElementById("searchInput").disabled = false;

@@ -104,8 +104,6 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
 
     accordion.innerHTML = accordionContent;
     fileSection.appendChild(accordion);
-
-    ShowLoading(false);
 }
 
 function displayStreamingResults(attributes, fileName) {
@@ -176,8 +174,6 @@ function displayStreamingResults(attributes, fileName) {
 
     accordion.innerHTML = accordionContent;
     fileSec.appendChild(accordion);
-
-    ShowLoading(false);
 }
 
 module.exports = { displayResults, displayStreamingResults };
