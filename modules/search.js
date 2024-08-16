@@ -5,13 +5,19 @@ function searchFiles() {
     fileSections.forEach(section => {
         // Ensure .main-info exists before accessing its children
         const mainInfo = section.querySelector('.main-info');
+
+        if (input == "") {
+            section.style.display = 'block';
+            return;
+        }
+
         if (!mainInfo) {
             section.style.display = 'none';  // Hide sections without .main-info
             return;
         }
 
         // Get the "File Name" paragraph, which is the second child element of the .main-info div
-        const fileNameElement = mainInfo.children[0];
+        const fileNameElement = mainInfo.children[1];
         const fileName = fileNameElement ? fileNameElement.querySelector('strong').innerText.toLowerCase() : '';
 
         if (fileName.includes(input)) {

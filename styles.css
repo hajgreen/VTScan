@@ -34,9 +34,10 @@ body {
 /*  */
 
 #drop-area {
+  padding: 0 12px;
   width: 100%;
   height: 400px;
-  border: 2px dashed #8b8b8b;
+  border: 2px dashed #b0b0b0;
   border-radius: 12px;
   background-color: #fafafa;
   display: flex;
@@ -206,7 +207,7 @@ body {
 .main-data {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 20px;
 }
 
 .positives {
@@ -244,12 +245,12 @@ body {
 .main-info {
   display: grid;
   grid-template-columns: auto auto;
-  grid-gap: 20px 200px;
+  grid-gap: 20px 220px;
   margin-bottom: 22px;
 }
 
 #searchInput {
-  width: 400px;
+  width: 300px;
   background-color: rgba(0, 0, 0, 0.1);
   border: 1px solid rgb(61, 61, 61);
   border-radius: 5px;
