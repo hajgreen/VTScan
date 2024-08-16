@@ -1,6 +1,18 @@
 const loadingStep = document.getElementById('loading-step');
 
-function displayResults(attributes, fileName, fileSection, file = undefined) {
+function truncateString(str, num) {
+    if (str.length <= num) {
+        return str;
+    }
+
+    const partLength = Math.floor((num - 5) / 2);
+    const firstPart = str.substring(0, partLength);
+    const lastPart = str.substring(str.length - partLength);
+
+    return `${firstPart} ... ${lastPart}`;
+}
+
+function displayResults(attributes, fileName, fileSection, file = undefined, hash) {
 
     const { last_analysis_stats, last_analysis_results } = attributes;
     const totalAVs = last_analysis_stats.harmless + last_analysis_stats.malicious + last_analysis_stats.suspicious + last_analysis_stats.undetected + last_analysis_stats.timeout;
@@ -10,14 +22,28 @@ function displayResults(attributes, fileName, fileSection, file = undefined) {
 
     const mainInfo = document.createElement('div');
     mainInfo.classList.add("main-info");
+    const mainData = document.createElement('div');
+    mainData.classList.add("main-data");
 
-    fileSection.innerHTML += `
-        <p><span style="color:${maliciousAVs > 2 ? "#ff3d3d" : "#00a500"}; font-weight: 700; font-size: 32px; margin-left: 4px;">${maliciousAVs} / ${totalAVs}</span></p>
+    fileSection.appendChild(mainData);
+
+    mainData.innerHTML += `
+        <div class="engines" style="background-color: ${maliciousAVs > 1 ? "#f44336" : "#00aa00"};">
+            <div class="circle">
+                <div class="positives" style="color: ${maliciousAVs > 1 ? "#f44336" : "#00aa00"};">
+                    ${maliciousAVs}
+                </div> 
+                <div class="total">
+                    / ${totalAVs}
+                </div>
+            </div>  
+        </div>
     `;
 
-    fileSection.appendChild(mainInfo);
+    mainData.appendChild(mainInfo);
 
     // نمایش اطلاعات کلی
+    mainInfo.innerHTML += `<p>File Hash (SHA-256): ${truncateString(hash, 24)}</p>`;
     mainInfo.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;
     mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
     mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;

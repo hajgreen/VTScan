@@ -34,7 +34,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
 
         if (response.ok) {
             const result = await response.json();
-            displayResults(result.data.attributes, fileName, fileSection, file);
+            displayResults(result.data.attributes, fileName, fileSection, file, hash);
         }
         else if (response.status === 404) {
             fileSection.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;

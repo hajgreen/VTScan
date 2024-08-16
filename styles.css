@@ -203,10 +203,48 @@ body {
   font-weight: 700;
 }
 
+.main-data {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.positives {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+.total {
+  font-size: 17px;
+}
+
+.engines {
+  border-radius: 50%;
+  width: 85px;
+  height: 85px;
+  padding: 7px;
+  box-sizing: border-box;
+  margin-bottom: 18px;
+}
+
+.engines .circle {
+  background-color: #fff;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  color: black;
+  padding-top: 4px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
 .main-info {
   display: grid;
-  grid-template-columns: auto auto auto;
-  grid-gap: 10px;
+  grid-template-columns: auto auto;
+  grid-gap: 20px 200px;
   margin-bottom: 22px;
 }
 
@@ -222,7 +260,7 @@ body {
   background-color: rgba(0, 0, 0, 0.1);
   border: 1px solid rgb(61, 61, 61);
   border-radius: 5px;
-  padding: 6px 0;
+  padding: 6px 8px;
   margin-left: 4px;
 }
 
