@@ -77,6 +77,15 @@ body {
   margin-bottom: 30px;
 }
 
+.btn-rescanFile {
+  margin-bottom: -8px;
+  width: max-content;
+  padding: 5px 8px;
+  background-color: #f2f2f2;
+  border: 1px solid #b6b6b6;
+  border-radius: 6px;
+}
+
 .file-section {
   margin-bottom: 14px;
   padding: 16px 18px;
@@ -212,20 +221,20 @@ body {
 }
 
 .positives {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
-  line-height: 30px;
+  line-height: 34px;
 }
 
 .total {
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .engines {
   border-radius: 50%;
-  width: 85px;
-  height: 85px;
-  padding: 7px;
+  width: 100px;
+  height: 100px;
+  padding: 8px;
   box-sizing: border-box;
   margin-bottom: 18px;
 }
@@ -237,7 +246,7 @@ body {
   width: 100%;
   text-align: center;
   color: black;
-  padding-top: 4px;
+  padding-top: 8px;
   box-sizing: border-box;
   position: relative;
   z-index: 1;
@@ -248,6 +257,7 @@ body {
   grid-template-columns: auto auto;
   grid-gap: 20px 220px;
   margin-bottom: 22px;
+  align-items: center;
 }
 
 #searchInput {

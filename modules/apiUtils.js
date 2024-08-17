@@ -1,3 +1,30 @@
+async function rescanFile(fileId) {
+    const apiKey = await getApiKey();
+
+    try {
+        const url = `https://www.virustotal.com/api/v3/files/${fileId}/analyse`;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'x-apikey': apiKey
+            }
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+
+            console.log(result);
+        } else {
+
+        }
+
+        console.log('Rescan requested successfully:', response.data);
+    } catch (error) {
+        console.error('Error requesting rescan:', error.response ? error.response.data : error.message);
+    }
+}
+
 async function pollScanResults(scanId, fileName, fileSection) {
     const apiKey = await getApiKey();
     const url = `https://www.virustotal.com/api/v3/analyses/${scanId}`;
@@ -94,4 +121,4 @@ async function uploadFile(file, fileSection) {
     xhr.send(formData);
 }
 
-module.exports = { uploadFile };
+module.exports = { uploadFile, rescanFile };
