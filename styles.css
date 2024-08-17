@@ -56,7 +56,7 @@ body {
 
 #file-select-button,
 #folder-select-button {
-  background-color: #007bff;
+  background-color: #0067d6;
   color: white;
   border: none;
   padding: 6px 10px;
@@ -81,8 +81,9 @@ body {
   margin-bottom: -8px;
   width: max-content;
   padding: 5px 8px;
-  background-color: #f2f2f2;
-  border: 1px solid #b6b6b6;
+  background-color: #0067d6;
+  border: 0;
+  color: white;
   border-radius: 6px;
 }
 
@@ -253,11 +254,13 @@ body {
 }
 
 .main-info {
+  width: 85%;
   display: grid;
   grid-template-columns: auto auto;
-  grid-gap: 20px 220px;
+  grid-gap: 16px 10px;
   margin-bottom: 22px;
   align-items: center;
+  justify-items: start;
 }
 
 #searchInput {

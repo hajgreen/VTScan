@@ -1,4 +1,4 @@
-async function rescanFile(fileId) {
+async function rescanFile(fileId, event) {
     const apiKey = await getApiKey();
 
     try {
@@ -12,16 +12,12 @@ async function rescanFile(fileId) {
         });
 
         if (response.ok) {
-            const result = await response.json();
-
-            console.log(result);
+            alert("The rescan request was successfully completed (new results will be applied in a few minutes)")
         } else {
-
+            alert("The request failed!)")
         }
-
-        console.log('Rescan requested successfully:', response.data);
     } catch (error) {
-        console.error('Error requesting rescan:', error.response ? error.response.data : error.message);
+        alert("The request failed!)")
     }
 }
 
