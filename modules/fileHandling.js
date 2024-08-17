@@ -73,7 +73,7 @@ async function handleFolderContextMenu(folderPath) {
 }
 
 
-async function handleFileContextMenu({ fileName, fileSize, fileData }, fileCount) {
+async function handleFileContextMenu({ fileName, fileSize, fileData, filePath }, fileCount) {
 
     if ((performance.now() - nowTime) > 3000) {
         resultsContainer.innerHTML = "";
@@ -99,6 +99,7 @@ async function handleFileContextMenu({ fileName, fileSize, fileData }, fileCount
 
     // Create a new File object
     const file = new File([blob], fileName, { type: "application/octet-stream" });
+    file.path = filePath;
 
     const reader = new FileReader();
     reader.onload = function () {

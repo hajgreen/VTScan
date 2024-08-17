@@ -70,7 +70,7 @@ function PathToFile(filePath) {
 	const fileSize = stats.size;
 	const fileData = fs.readFileSync(filePath);
 
-	return { fileName, fileSize, fileData };
+	return { fileName, fileSize, fileData, filePath };
 }
 
 function getTheme() {
