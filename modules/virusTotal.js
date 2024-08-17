@@ -16,7 +16,7 @@ async function getApiKey() {
     return api[apiCounter];
 }
 
-async function checkFileHash(hash, fileName, fileSection, file = undefined) {
+async function checkFileHash(hash, fileName, fileSection, file = undefined, filePath) {
 
     ShowLoading(true);
 
@@ -34,7 +34,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined) {
 
         if (response.ok) {
             const result = await response.json();
-            await displayResults(result.data.attributes, fileName, fileSection, file, hash);
+            await displayResults(result.data.attributes, fileName, fileSection, file, hash, filePath);
         }
         else if (response.status === 404) {
             fileSection.innerHTML += `<p>File Name: <strong>${fileName}</strong></p>`;

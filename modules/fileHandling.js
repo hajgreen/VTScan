@@ -99,7 +99,6 @@ async function handleFileContextMenu({ fileName, fileSize, fileData, filePath },
 
     // Create a new File object
     const file = new File([blob], fileName, { type: "application/octet-stream" });
-    file.path = filePath;
 
     const reader = new FileReader();
     reader.onload = function () {
@@ -110,7 +109,7 @@ async function handleFileContextMenu({ fileName, fileSize, fileData, filePath },
 
         worker.onmessage = async function (event) {
             const hash = event.data;
-            await checkFileHash(hash, fileName, fileSection, file);
+            await checkFileHash(hash, fileName, fileSection, file, filePath);
         };
 
         worker.onerror = function (error) {

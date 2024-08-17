@@ -10,7 +10,7 @@ function truncateString(str, num) {
     return `${firstPart} ... ${lastPart}`;
 }
 
-function displayResults(attributes, fileName, fileSection, file = undefined, hash) {
+function displayResults(attributes, fileName, fileSection, file = undefined, hash, filePath) {
 
     const { last_analysis_stats, last_analysis_results } = attributes;
     const totalAVs = last_analysis_stats.harmless + last_analysis_stats.malicious + last_analysis_stats.suspicious + last_analysis_stats.undetected + last_analysis_stats.timeout;
@@ -43,7 +43,7 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
     mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
     mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;
     mainInfo.innerHTML += `<p>File Hash (SHA-256): ${truncateString(hash, 50)}</p>`;
-    mainInfo.innerHTML += `<p>File Path: ${truncateString(file.path, 50)}</p>`;
+    mainInfo.innerHTML += `<p>File Path: ${truncateString((file.path || filePath), 50)}</p>`;
     mainInfo.innerHTML += `
     <button class="btn-rescanFile" type="button" onclick="rescanFile('${hash}'); this.disabled=true;">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
