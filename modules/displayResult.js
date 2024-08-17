@@ -39,11 +39,11 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
     mainData.appendChild(mainInfo);
 
     // نمایش اطلاعات کلی
-    mainInfo.innerHTML += `<p>File Hash (SHA-256): ${truncateString(hash, 50)}</p>`;
-    mainInfo.innerHTML += `<p>File Name: <strong>${truncateString(fileName, 50)}</strong></p>`;
+    mainInfo.innerHTML += `<p>File Hash (SHA-256): ${truncateString(hash, 24)}</p>`;
+    mainInfo.innerHTML += `<p>File Name: <strong>${truncateString(fileName, 36)}</strong></p>`;
     mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;
     mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
-    mainInfo.innerHTML += `<p>Folder Path: <strong>${truncateString((file.path || filePath), 50).replace(fileName, "")}</strong></p>`;
+    mainInfo.innerHTML += `<p>Folder Path: <strong>${truncateString((file.path || filePath).replace(fileName, ""), 50)}</strong></p>`;
     mainInfo.innerHTML += `
     <button class="btn-rescanFile" type="button" onclick="rescanFile('${hash}'); this.disabled=true;">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
