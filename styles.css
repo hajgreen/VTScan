@@ -257,10 +257,15 @@ body {
   width: 85%;
   display: grid;
   grid-template-columns: auto auto;
-  grid-gap: 16px 10px;
+  grid-gap: 16px 20px;
   margin-bottom: 22px;
   align-items: center;
   justify-items: start;
+  justify-content: space-between;
+}
+
+.main-info p {
+  width: 400px;
 }
 
 #searchInput {

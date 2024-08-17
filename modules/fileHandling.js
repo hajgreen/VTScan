@@ -5,11 +5,13 @@ const { ipcRenderer } = require('electron');
 
 // Listen for the 'handle-file' event from the main process
 ipcRenderer.on('handle-file', async (event, file) => {
+    ShowLoading(true);
     const data = await file;
     handleFileContextMenu(data.pathFile, data.fileCount);
 });
 // Listen for the 'handle-folder' event from the main process
 ipcRenderer.on('handle-folder', async (event, folderPath) => {
+    ShowLoading(true);
     handleFolderContextMenu(await folderPath);
 });
 

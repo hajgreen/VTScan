@@ -115,14 +115,14 @@ function orderBy(parameter) {
                 bValue = bFileName ? bFileName.innerText.toLowerCase() : '';
                 return aValue.localeCompare(bValue);
             case 'fileSize':
-                const aFileSize = aMainInfo.children[2];
-                const bFileSize = bMainInfo.children[2];
+                const aFileSize = aMainInfo.children[3];
+                const bFileSize = bMainInfo.children[3];
                 aValue = aFileSize ? parseFileSize(aFileSize.innerText) : 0;
                 bValue = bFileSize ? parseFileSize(bFileSize.innerText) : 0;
                 return bValue - aValue; // Descending order
             case 'lastAnalysisDate':
-                const aDateText = aMainInfo.children[3];
-                const bDateText = bMainInfo.children[3];
+                const aDateText = aMainInfo.children[2];
+                const bDateText = bMainInfo.children[2];
                 aValue = aDateText ? parseDate(aDateText.innerText) : new Date(0);
                 bValue = bDateText ? parseDate(bDateText.innerText) : new Date(0);
                 return bValue - aValue; // Descending order
