@@ -4,7 +4,7 @@
   "description": "VTScan VirusTotal Scan files",
   "keywords": [],
   "main": "./main.js",
-  "version": "2.1.4",
+  "version": "2.3.4",
   "author": "Mohammad Rasabakhsh",
   "scripts": {
     "start": "electron ."
