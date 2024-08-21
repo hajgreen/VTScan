@@ -1,2 +1,5 @@
 Windows Compile Command:
 npx @electron/packager . VTScan --platform=win32 --arch=x64 --icon=./build/icon.ico
+
+with bun js
+bunx @electron/packager . VTScan --platform=win32 --arch=x64 --icon=./build/icon.ico
