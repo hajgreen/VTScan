@@ -43,14 +43,16 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
     mainInfo.innerHTML += `<p>File Name: <strong>${truncateString(fileName, 36)}</strong></p>`;
     mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;
     mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
-    mainInfo.innerHTML += `<p>Folder Path: <strong>${truncateString((file.path || filePath).replace(fileName, ""), 50)}</strong></p>`;
+    if (file.path || filePath) {
+        mainInfo.innerHTML += `<p>Folder Path: <strong>${truncateString((file.path || filePath).replace(fileName, ""), 50)}</strong></p>`;
+    }
     mainInfo.innerHTML += `
     <button class="btn-rescanFile" type="button" onclick="rescanFile('${hash}'); this.disabled=true;">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
         </svg>
-        Rescan file
+        Rescan this file
     </button>`;
 
     // ایجاد آکاردیون برای نتایج دقیق آنتی ویروس‌ها

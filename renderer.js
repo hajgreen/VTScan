@@ -8,5 +8,6 @@ const { displayResults, displayStreamingResults } = require('./modules/displayRe
 const { searchFiles, orderBy } = require('./modules/search');
 require('./modules/contextMenu');
 require('./modules/events');
+require('./modules/usbScan')
 
 const resultsContainer = document.getElementById('results');
