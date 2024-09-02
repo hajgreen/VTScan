@@ -145,22 +145,67 @@ async function handleFileContextMenu({ fileName, fileSize, fileData, filePath })
 
 async function deleteFile(filePath) {
 
-    try {
-        // بررسی وجود فایل
-        await fs.access(filePath); // این خط بررسی می‌کند که آیا فایل وجود دارد
-
-        // حذف فایل
-        await fs.unlink(filePath);
-        console.log(`File at ${filePath} has been deleted successfully.`);
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            console.error(`File not found: ${filePath}`);
-        } else if (error.code === 'EACCES' || error.code === 'EPERM') {
-            console.error(`Permission denied: Unable to delete file at ${filePath}`);
-        } else {
-            console.error(`An error occurred while deleting the file: ${error.message}`);
+    new Snackbar(`Do you want to <b>delete</b> this file?`, {
+        position: 'top-center',
+        actionText: 'Yes, Delete',
+        timeout: 20000,
+        style: {
+            container: [
+                ['background-color', '#fff'],
+                ['border-radius', '5px']
+            ],
+            message: [
+                ['color', '#212121'],
+            ],
+            bold: [
+                ['font-weight', '800'],
+            ],
+            actionButton: [
+                ['color', 'red'],
+            ],
         }
-    }
+    }).setActionCallback(
+
+        document.getElementsByClassName("actionButton")[0].addEventListener('click', async () => {
+
+            try {
+                // بررسی وجود فایل
+                await fs.access(filePath); // این خط بررسی می‌کند که آیا فایل وجود دارد
+
+                // حذف فایل
+                await fs.unlink(filePath);
+
+                new Snackbar(`Delete this file Successfully!`, {
+                    position: 'top-center',
+                    actionText: 'Ok',
+                    style: {
+                        container: [
+                            ['background-color', 'green'],
+                            ['border-radius', '5px']
+                        ],
+                        message: [
+                            ['color', '#eee'],
+                        ],
+                        bold: [
+                            ['font-weight', 'bold'],
+                        ],
+                        actionButton: [
+                            ['color', 'white'],
+                        ],
+                    }
+                });
+
+            } catch (error) {
+                if (error.code === 'ENOENT') {
+                    console.error(`File not found: ${filePath}`);
+                } else if (error.code === 'EACCES' || error.code === 'EPERM') {
+                    console.error(`Permission denied: Unable to delete file at ${filePath}`);
+                } else {
+                    console.error(`An error occurred while deleting the file: ${error.message}`);
+                }
+            }
+        })
+    );
 
 }
 
