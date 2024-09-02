@@ -24,10 +24,24 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
 
     fileSection.appendChild(mainData);
 
+    var color = "";
+
+    if (maliciousAVs > 2) {
+
+        if (maliciousAVs > 5) {
+            color = "#ff4747";
+        } else {
+            color = "#ff8800";
+        }
+
+    } else {
+        color = "#1ba13a";
+    }
+
     mainData.innerHTML += `
-        <div class="engines" style="background-color: ${maliciousAVs > 4 ? "#f44336cc" : "#00aa00b0"};">
+        <div class="engines" style="background-color: ${color};">
             <div class="circle">
-                <div class="positives" style="color: ${maliciousAVs > 4 ? "#f44336cc" : "#00aa00b0"};">
+                <div class="positives" style="color: ${color};">
                     ${maliciousAVs}
                 </div> 
                 <div class="total">
@@ -43,10 +57,10 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
     // mainInfo.innerHTML += `<p>File Hash (SHA-256): ${truncateString(hash, 24)}</p>`;
     mainInfo.innerHTML += `<p>File Name: <strong>${truncateString(fileName, 36)}</strong></p>`;
     mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;
-    mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
     if (newFilePath) {
         mainInfo.innerHTML += `<p>Folder Path: <strong>${truncateString(newFilePath.replace(fileName, ""), 50)}</strong></p>`;
     }
+    mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
     mainInfo.innerHTML += `
     <button class="btn-rescanFile" type="button" onclick="rescanFile('${hash}'); this.disabled=true;">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">

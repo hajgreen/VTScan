@@ -109,8 +109,8 @@ function orderBy(parameter) {
 
         switch (parameter) {
             case 'fileName':
-                const aFileName = aMainInfo.children[1].querySelector('strong');
-                const bFileName = bMainInfo.children[1].querySelector('strong');
+                const aFileName = aMainInfo.children[0].querySelector('strong');
+                const bFileName = bMainInfo.children[0].querySelector('strong');
                 aValue = aFileName ? aFileName.innerText.toLowerCase() : '';
                 bValue = bFileName ? bFileName.innerText.toLowerCase() : '';
                 return aValue.localeCompare(bValue);
@@ -121,8 +121,8 @@ function orderBy(parameter) {
                 bValue = bFileSize ? parseFileSize(bFileSize.innerText) : 0;
                 return bValue - aValue; // Descending order
             case 'lastAnalysisDate':
-                const aDateText = aMainInfo.children[2];
-                const bDateText = bMainInfo.children[2];
+                const aDateText = aMainInfo.children[1];
+                const bDateText = bMainInfo.children[1];
                 aValue = aDateText ? parseDate(aDateText.innerText) : new Date(0);
                 bValue = bDateText ? parseDate(bDateText.innerText) : new Date(0);
                 return bValue - aValue; // Descending order

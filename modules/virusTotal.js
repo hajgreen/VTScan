@@ -76,6 +76,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined, file
 
     ShowLoading(false);
 
+    orderBy("scanResult");
     document.getElementById("file-counter-result").innerText = `(${resultsContainer.childElementCount})`;
     document.getElementById("searchInput").disabled = false;
     document.getElementById("sortOptions").disabled = false;
