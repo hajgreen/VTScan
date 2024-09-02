@@ -77,6 +77,22 @@ body {
   margin-bottom: 30px;
 }
 
+#dark-mode-text {
+  color: rgb(215, 215, 215) !important;
+}
+
+div {
+  color: rgb(33, 33, 33);
+}
+
+span {
+  color: rgb(33, 33, 33);
+}
+
+.home-svg {
+  color: rgb(33, 33, 33);
+}
+
 .btn-rescanFile {
   margin-bottom: -8px;
   width: max-content;
@@ -311,7 +327,7 @@ body {
   background: none;
   border: 0;
   color: rgb(222, 222, 222);
-  background-color: #454545;
+  background-color: #323232;
   padding: 8px 0;
   border-radius: 6px;
   margin-left: 18px;

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme, screen } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme, screen, Tray } = require('electron');
 const { api_keys } = require('./data/vt_api_keys.json');
 const { version } = require('./package.json');
 const fs = require('fs');
@@ -7,8 +7,11 @@ const Store = require('electron-store');
 const { usb } = require('usb');
 
 require('dotenv').config();
+const store = new Store();
 
 var win;
+let tray;
+
 var arrEnable = true;
 var arrFiles = [];
 var arrFolders = [];
@@ -28,6 +31,24 @@ function createWindow() {
 	});
 
 	win.loadFile('index.html');
+
+	// Listener for switching to settings
+	ipcMain.on('open-settings', (event) => {
+		win.loadFile(path.join(__dirname, './pages/settings.html'));
+	});
+
+	ipcMain.on('back-to-index', (event) => {
+		win.loadFile(path.join(__dirname, 'index.html'));
+	});
+
+	win.on('close', function (event) {
+		if (!app.isQuiting) {
+			event.preventDefault();
+			win.hide();
+		}
+		return false;
+	});
+
 
 	// After the window has loaded, send the file path to the renderer process
 	win.webContents.on('did-finish-load', async () => {
@@ -82,7 +103,7 @@ function createNotificationWindow() {
 		}
 	});
 
-	notificationWindow.loadFile('notification.html');
+	notificationWindow.loadFile('./pages/notification.html');
 
 	// گوش دادن به درخواست بستن پنجره
 	ipcMain.on('close-notification', () => {
@@ -105,8 +126,6 @@ function PathToFile(filePath) {
 }
 
 function getTheme() {
-
-	const store = new Store();
 	const theme = store.get('theme');
 
 	if (theme) {
@@ -131,6 +150,33 @@ app.whenReady().then(() => {
 		app.quit();
 		return;
 	}
+
+	// Hide to Try
+
+	tray = new Tray(path.join(__dirname, './build/icon.ico'));
+
+	const contextMenu = Menu.buildFromTemplate([
+		{
+			label: 'Show App', click: function () {
+				win.show();
+			}
+		},
+		{
+			label: 'Quit', click: function () {
+				app.isQuiting = true;
+				app.quit();
+			}
+		}
+	]);
+
+	tray.setToolTip('VTScan');
+	tray.setContextMenu(contextMenu);
+
+	tray.on('click', () => {
+		win.isVisible() ? win.hide() : win.show();
+	});
+
+	// 
 
 	app.on('second-instance', async (event, commandLine) => {
 		if (win) {

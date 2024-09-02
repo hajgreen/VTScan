@@ -49,6 +49,18 @@ body {
   margin: 0;
 }
 
+div {
+  color: rgb(215, 215, 215);
+}
+
+span {
+  color: rgb(215, 215, 215);
+}
+
+.home-svg {
+  color: rgb(215, 215, 215);
+}
+
 .card {
   background-color: rgb(46, 46, 46);
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);

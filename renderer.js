@@ -6,6 +6,7 @@ const { ShowLoading } = require('./modules/loading');
 const { timeAgo } = require('./modules/time');
 const { displayResults, displayStreamingResults } = require('./modules/displayResult');
 const { searchFiles, orderBy } = require('./modules/search');
+const { openSettings } = require('./modules/pageRoute');
 require('./modules/contextMenu');
 require('./modules/events');
 require('./modules/usbScan');

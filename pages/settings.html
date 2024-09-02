@@ -1,0 +1,108 @@
+<!-- settings.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="container-lg mt-4">
+        <div>
+            <h4>Settings</h4>
+            <button onclick="goBack()" class="btn text-light d-flex gap-1 p-0 mt-3 text-decoration-underline">
+                <svg class="home-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
+                </svg>
+                <span>Back to home</span>
+            </button>
+        </div>
+        <hr>
+        <div class="d-flex flex-column gap-2">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="hideToTray">
+                <label class="form-check-label" for="hideToTray">Hide to Try</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="addToStartup">
+                <label class="form-check-label" for="addToStartup">Add to Startup</label>
+            </div>
+
+            <button class="btn btn-primary mt-3" onclick="saveSettings()">
+                Save settings
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        const Store = require('electron-store');
+        const store = new Store();
+
+
+        const hideToTray = store.get('hideToTray');
+        const addToStartup = store.get('addToStartup');
+
+        if (hideToTray != undefined) {
+            if (hideToTray == true) {
+                document.getElementById('hideToTray').checked = true;
+            } else {
+                document.getElementById('hideToTray').checked = false;
+            }
+        }
+        else {
+            store.set('hideToTray', true);
+        }
+
+        if (addToStartup != undefined) {
+            if (addToStartup == true) {
+                document.getElementById('addToStartup').checked = true;
+            } else {
+                document.getElementById('addToStartup').checked = false;
+            }
+        }
+        else {
+            store.set('addToStartup', true);
+        }
+
+        // 
+
+        function goBack() {
+            ipcRenderer.send('back-to-index');
+        }
+
+        function saveSettings() {
+
+            // ساختن یک شیء JSON
+            const settingsData = {
+                hideToTray: document.getElementById('hideToTray').checked,
+                addToStartup: document.getElementById('addToStartup').checked
+            };
+
+            store.set('hideToTray', settingsData.hideToTray);
+            store.set('addToStartup', settingsData.addToStartup);
+
+            alert("Save Settings Successfully!")
+        }
+
+        async function setTheme() {
+
+            const theme = store.get('theme');
+
+            if (theme == "dark") {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = '../style_dark.css';
+                document.head.appendChild(link);
+            }
+        } setTheme();
+    </script>
+</body>
+
+</html>
