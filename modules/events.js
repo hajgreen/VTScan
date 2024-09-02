@@ -2,8 +2,6 @@ const path = require('path');
 const fs = require('fs');
 
 const dropArea = document.getElementById('drop-area');
-const fileInput = document.getElementById('file-input');
-const folderInput = document.getElementById('folder-input');
 const fileSelectButton = document.getElementById('file-select-button');
 const folderSelectButton = document.getElementById('folder-select-button');
 const { ipcRenderer } = require('electron');
@@ -77,7 +75,6 @@ async function processDirectory(directoryEntry) {
 
 // Event listener برای انتخاب فایل از طریق دکمه
 fileSelectButton.addEventListener('click', async () => {
-    fileInput.value = null;
     resultsContainer.innerHTML = "";
     document.getElementById("file-counter-result").innerText = `(0)`;
     document.getElementById("searchInput").disabled = true;
@@ -89,13 +86,10 @@ fileSelectButton.addEventListener('click', async () => {
         const file = await createSimulatedFile(item);
         handleFile(file);
     })
-
-    // fileInput.click();
 });
 
 // Event listener برای انتخاب پوشه از طریق دکمه
 folderSelectButton.addEventListener('click', async () => {
-    folderInput.value = null;
     resultsContainer.innerHTML = "";
     document.getElementById("file-counter-result").innerText = `(0)`;
     document.getElementById("searchInput").disabled = true;
@@ -128,35 +122,6 @@ folderSelectButton.addEventListener('click', async () => {
         }));
     } catch (err) {
         // console.error(`Error reading directory: ${err}`);
-    }
-});
-
-fileInput.addEventListener('change', async (event) => {
-    const files = event.target.files;
-    if (files.length > 0) {
-        await handleMultipleFiles(files);
-    }
-});
-
-folderInput.addEventListener('change', async (event) => {
-    const files = event.target.files;
-    const Extensions = [
-        '.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.msc', '.reg', '.inf', '.jar', '.py', ".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz", ".tar.gz", ".tar.bz2", ".tar.xz", ".z", ".lz", ".lzma", ".cab", ".iso", ".tgz", ".tbz2", ".txz", ".wim", ".dmg", ".s7z"
-    ];
-
-    // let counter = 0;
-    // for (let file of files) {
-    //     const ext = path.extname(file.name).toLowerCase();
-    //     if (Extensions.includes(ext)) {
-    //         counter++;
-    //     }
-    // }
-
-    for (let file of files) {
-        const ext = path.extname(file.name).toLowerCase();
-        if (Extensions.includes(ext)) {
-            await handleFile(file);
-        }
     }
 });
 
