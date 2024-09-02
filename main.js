@@ -1,9 +1,10 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, nativeTheme, screen } = require('electron');
 const { api_keys } = require('./data/vt_api_keys.json');
 const { version } = require('./package.json');
 const fs = require('fs');
 const path = require('path');
 const Store = require('electron-store');
+const { usb } = require('usb');
 
 require('dotenv').config();
 
@@ -60,6 +61,36 @@ function createWindow() {
 
 		process.argv = [];
 		arrEnable = false;
+	});
+}
+
+function createNotificationWindow() {
+	const { width, height } = screen.getPrimaryDisplay().workAreaSize; // گرفتن اندازه صفحه نمایش اصلی
+
+	const notificationWindow = new BrowserWindow({
+		width: 600,
+		height: 300,
+		x: (width - 300) / 2, // قرار دادن پنجره در وسط صفحه
+		y: (height - 150) / 2, // قرار دادن پنجره در وسط صفحه
+		frame: false, // بدون قاب
+		alwaysOnTop: true, // همیشه روی دیگر پنجره‌ها
+		transparent: true, // شفافیت پنجره
+		resizable: false, // غیر قابل تغییر اندازه
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false, // اجازه دسترسی به IPC
+		}
+	});
+
+	notificationWindow.loadFile('notification.html');
+
+	// گوش دادن به درخواست بستن پنجره
+	ipcMain.on('close-notification', () => {
+		notificationWindow.close();
+	});
+
+	ipcMain.on('start-usb-scan-main', async () => {
+		await win.webContents.send('start-usb-scan', { start: true });
 	});
 }
 
@@ -237,4 +268,8 @@ ipcMain.handle('get-api-key', () => {
 	else {
 		return api_keys;
 	}
+});
+
+usb.on('attach', (device) => {
+	createNotificationWindow();
 });

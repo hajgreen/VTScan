@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "electron-store": "^8.2.0"
+    "electron-store": "^8.2.0",
+    "usb": "^2.13.0"
   },
   "devDependencies": {
     "@electron/packager": "^18.3.4",
