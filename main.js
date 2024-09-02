@@ -270,6 +270,6 @@ ipcMain.handle('get-api-key', () => {
 	}
 });
 
-usb.on('attach', (device) => {
+usb.on('attach', () => {
 	createNotificationWindow();
 });

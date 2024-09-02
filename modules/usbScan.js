@@ -13,39 +13,50 @@ ipcRenderer.on('start-usb-scan', async (event, start) => {
     }
 });
 
-// تابع برای جستجوی فایل‌ها با پسوندهای خاص
-function listFiles(directory) {
-
+// تابع اصلی برای لیست کردن فایل‌ها
+async function listFiles(directory) {
     const extensions = [
-        '.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.msc', '.reg', '.jar', '.py', ".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz", ".tar.gz", ".tar.bz2", ".tar.xz", ".z", ".lz", ".lzma", ".cab", ".iso", ".tgz", ".tbz2", ".txz", ".wim", ".dmg", ".s7z"
+        '.exe', '.bat', '.cmd', '.com', '.msi', '.scr', '.vbs', '.js', '.jse', '.wsf', '.wsh', '.ps1', '.msc', '.reg', '.jar', '.py', '.zip', '.rar', '.7z', '.tar', '.gz', '.bz2', '.xz', '.tar.gz', '.tar.bz2', '.tar.xz', '.z', '.lz', '.lzma', '.cab', '.iso', '.tgz', '.tbz2', '.txz', '.wim', '.dmg', '.s7z'
     ];
 
-    fs.readdir(directory, (err, files) => {
-        if (err) {
-            return;
-        }
+    try {
+        const files = await fs.promises.readdir(directory, { withFileTypes: true });
 
-        files.forEach((file) => {
-            const filePath = path.join(directory, file);
+        await Promise.all(files.map(async (file) => {
+            const filePath = path.join(directory, file.name);
 
-            fs.stat(filePath, (err, stats) => {
-                if (err) {
-                    return;
+            if (file.isDirectory()) {
+                await listFiles(filePath); // بازگشت به صورت بازگشتی به پوشه‌های داخل
+            } else if (file.isFile()) {
+                const fileExtension = path.extname(file.name).toLowerCase();
+                if (extensions.includes(fileExtension)) {
+                    // دریافت اطلاعات فایل
+                    const fileStats = await fs.promises.stat(filePath);
+
+                    // ایجاد یک شبیه‌ساز فایل برای استفاده در مرورگر
+                    const simulatedFile = await createSimulatedFile(filePath, file.name, fileStats.size);
+
+                    // فراخوانی تابع handleFile با فایل شبیه‌سازی‌شده
+                    await handleFile(simulatedFile);
                 }
+            }
+        }));
+    } catch (err) {
+        // console.error(`Error reading directory: ${err}`);
+    }
+}
 
-                if (stats.isFile()) {
-                    // بررسی پسوند فایل
-                    const fileExtension = path.extname(file).toLowerCase();
-                    if (extensions.includes(fileExtension)) {
-                        console.log(`File: ${filePath}`);
-                    }
-                } else if (stats.isDirectory()) {
-                    // اگر پوشه باشد، به صورت بازگشتی به آن پوشه بروید
-                    listFiles(filePath);
-                }
-            });
-        });
-    });
+// تابعی برای شبیه‌سازی فایل در محیط مرورگر
+async function createSimulatedFile(filePath, fileName, fileSize) {
+    const fileData = await fs.promises.readFile(filePath);
+    const blob = new Blob([fileData], { type: 'application/octet-stream' });
+
+    // ایجاد یک شیء File برای استفاده در handleFile
+    const simulatedFile = new File([blob], fileName, { type: blob.type, lastModified: Date.now() });
+    simulatedFile.size = fileSize;
+    simulatedFile.name = fileName;
+
+    return simulatedFile;
 }
 
 // Function to detect USB device mount path (platform-specific)
@@ -111,18 +122,6 @@ function getUSBMountPath(callback) {
         callback(null);
     }
 }
-
-// Listen for USB device attachment
-// usb.on('attach', (device) => {
-//     // Automatically get USB mount path
-//     getUSBMountPath((usbPath) => {
-//         if (usbPath) {
-//             listFiles(usbPath);
-//         } else {
-//             console.error('Could not detect USB mount path.');
-//         }
-//     });
-// });
 
 function startScanUSB() {
     getUSBMountPath((usbPath) => {
