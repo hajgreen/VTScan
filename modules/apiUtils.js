@@ -1,3 +1,5 @@
+const { Snackbar } = require('../data/js/snackbar.js');
+
 async function rescanFile(fileId, event) {
     const apiKey = await getApiKey();
 
@@ -12,12 +14,66 @@ async function rescanFile(fileId, event) {
         });
 
         if (response.ok) {
-            alert("The rescan request was successfully completed (new results will be applied in a few minutes)")
+            new Snackbar(`The rescan request was successfully completed (new results will be applied in a few minutes)`, {
+                position: 'bottom-right',
+                actionText: 'Ok',
+                style: {
+                    container: [
+                        ['background-color', 'green'],
+                        ['border-radius', '5px']
+                    ],
+                    message: [
+                        ['color', '#eee'],
+                    ],
+                    bold: [
+                        ['font-weight', 'bold'],
+                    ],
+                    actionButton: [
+                        ['color', 'white'],
+                    ],
+                }
+            });
         } else {
-            alert("The request failed!)")
+            new Snackbar(`The request failed!`, {
+                position: 'bottom-right',
+                actionText: 'Ok',
+                style: {
+                    container: [
+                        ['background-color', 'red'],
+                        ['border-radius', '5px']
+                    ],
+                    message: [
+                        ['color', '#eee'],
+                    ],
+                    bold: [
+                        ['font-weight', 'bold'],
+                    ],
+                    actionButton: [
+                        ['color', 'white'],
+                    ],
+                }
+            });
         }
     } catch (error) {
-        alert("The request failed!)")
+        new Snackbar(`The request failed!`, {
+            position: 'bottom-right',
+            actionText: 'Ok',
+            style: {
+                container: [
+                    ['background-color', 'red'],
+                    ['border-radius', '5px']
+                ],
+                message: [
+                    ['color', '#eee'],
+                ],
+                bold: [
+                    ['font-weight', 'bold'],
+                ],
+                actionButton: [
+                    ['color', 'white'],
+                ],
+            }
+        });
     }
 }
 

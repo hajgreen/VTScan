@@ -40,11 +40,14 @@
         </div>
     </div>
 
+    <!-- <script src="../data/js/snackbar.js"></script> -->
+
     <script>
         const { ipcRenderer } = require('electron');
         const path = require('path');
         const Store = require('electron-store');
         var AutoLaunch = require('auto-launch');
+        const { Snackbar } = require('../data/js/snackbar.js');
 
         var VTScanAutoLaunch = new AutoLaunch({
             name: 'VTScan',
@@ -102,7 +105,25 @@
             store.set('hideToTray', settingsData.hideToTray);
             store.set('addToStartup', settingsData.addToStartup);
 
-            alert("Save Settings Successfully!")
+            new Snackbar(`Save Settings Successfully!`, {
+                position: 'bottom-right',
+                actionText: 'Ok',
+                style: {
+                    container: [
+                        ['background-color', 'green'],
+                        ['border-radius', '5px']
+                    ],
+                    message: [
+                        ['color', '#eee'],
+                    ],
+                    bold: [
+                        ['font-weight', 'bold'],
+                    ],
+                    actionButton: [
+                        ['color', 'white'],
+                    ],
+                }
+            });
         }
 
         async function setTheme() {

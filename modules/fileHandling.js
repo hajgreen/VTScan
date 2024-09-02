@@ -1,6 +1,7 @@
 const resultsContainer = document.getElementById('results');
 const fs = require('fs').promises;
 const path = require('path');
+const { Snackbar } = require('../data/js/snackbar.js');
 const { ipcRenderer } = require('electron');
 
 // Listen for the 'handle-file' event from the main process
@@ -88,7 +89,26 @@ async function handleFileContextMenu({ fileName, fileSize, fileData, filePath })
     const maxFileSize = 650 * 1024 * 1024;
 
     if (fileSize > maxFileSize) {
-        alert('File size exceeds the 650 MB limit.');
+
+        new Snackbar(`File size exceeds the 650 MB limit.`, {
+            position: 'bottom-right',
+            actionText: 'Ok',
+            style: {
+                container: [
+                    ['background-color', 'red'],
+                    ['border-radius', '5px']
+                ],
+                message: [
+                    ['color', '#eee'],
+                ],
+                bold: [
+                    ['font-weight', 'bold'],
+                ],
+                actionButton: [
+                    ['color', 'white'],
+                ],
+            }
+        });
         document.getElementById('results').innerHTML = "";
         return;
     }
@@ -149,7 +169,27 @@ async function handleFile(file) {
     const maxFileSize = 650 * 1024 * 1024;
 
     if (file.size > maxFileSize) {
-        alert('File size exceeds the 650 MB limit.');
+
+        new Snackbar(`File size exceeds the 650 MB limit.`, {
+            position: 'bottom-right',
+            actionText: 'Ok',
+            style: {
+                container: [
+                    ['background-color', 'red'],
+                    ['border-radius', '5px']
+                ],
+                message: [
+                    ['color', '#eee'],
+                ],
+                bold: [
+                    ['font-weight', 'bold'],
+                ],
+                actionButton: [
+                    ['color', 'white'],
+                ],
+            }
+        });
+
         resultsContainer.innerHTML = "";
         return;
     }
