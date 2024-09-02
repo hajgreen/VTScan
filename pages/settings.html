@@ -42,7 +42,15 @@
 
     <script>
         const { ipcRenderer } = require('electron');
+        const path = require('path');
         const Store = require('electron-store');
+        var AutoLaunch = require('auto-launch');
+
+        var VTScanAutoLaunch = new AutoLaunch({
+            name: 'VTScan',
+            path: path.join(__dirname, '../../../VTScan.exe'),
+        });
+
         const store = new Store();
 
 
@@ -63,12 +71,18 @@
         if (addToStartup != undefined) {
             if (addToStartup == true) {
                 document.getElementById('addToStartup').checked = true;
+
+                VTScanAutoLaunch.enable();
+
             } else {
                 document.getElementById('addToStartup').checked = false;
+
+                VTScanAutoLaunch.disable();
             }
         }
         else {
             store.set('addToStartup', true);
+            VTScanAutoLaunch.enable();
         }
 
         // 

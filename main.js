@@ -9,6 +9,9 @@ const { usb } = require('usb');
 require('dotenv').config();
 const store = new Store();
 
+const hideToTray = store.get('hideToTray');
+const addToStartup = store.get('addToStartup');
+
 var win;
 let tray;
 
@@ -42,11 +45,19 @@ function createWindow() {
 	});
 
 	win.on('close', function (event) {
-		if (!app.isQuiting) {
-			event.preventDefault();
-			win.hide();
+		if (hideToTray == undefined || hideToTray == true) {
+
+			if (!app.isQuiting) {
+				event.preventDefault();
+				win.hide();
+			}
+
+			return false;
 		}
-		return false;
+		else {
+			app.isQuiting = true;
+			app.quit();
+		}
 	});
 
 
@@ -111,6 +122,10 @@ function createNotificationWindow() {
 	});
 
 	ipcMain.on('start-usb-scan-main', async () => {
+		if (win) {
+			if (win.isMinimized()) win.restore();
+			win.focus();
+		}
 		await win.webContents.send('start-usb-scan', { start: true });
 	});
 }
@@ -153,28 +168,30 @@ app.whenReady().then(() => {
 
 	// Hide to Try
 
-	tray = new Tray(path.join(__dirname, './build/icon.ico'));
+	if (hideToTray == undefined || hideToTray == true) {
+		tray = new Tray(path.join(__dirname, './build/icon.ico'));
 
-	const contextMenu = Menu.buildFromTemplate([
-		{
-			label: 'Show App', click: function () {
-				win.show();
+		const contextMenu = Menu.buildFromTemplate([
+			{
+				label: 'Show App', click: function () {
+					win.show();
+				}
+			},
+			{
+				label: 'Quit', click: function () {
+					app.isQuiting = true;
+					app.quit();
+				}
 			}
-		},
-		{
-			label: 'Quit', click: function () {
-				app.isQuiting = true;
-				app.quit();
-			}
-		}
-	]);
+		]);
 
-	tray.setToolTip('VTScan');
-	tray.setContextMenu(contextMenu);
+		tray.setToolTip('VTScan');
+		tray.setContextMenu(contextMenu);
 
-	tray.on('click', () => {
-		win.isVisible() ? win.hide() : win.show();
-	});
+		tray.on('click', () => {
+			win.isVisible() ? win.hide() : win.show();
+		});
+	}
 
 	// 
 
