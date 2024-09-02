@@ -333,6 +333,31 @@ ipcMain.handle('get-api-key', () => {
 	}
 });
 
+ipcMain.handle('select-files', async () => {
+	const { canceled, filePaths } = await dialog.showOpenDialog({
+		properties: ['openFile', 'multiSelections'] // برای انتخاب چند فایل
+	});
+
+	if (canceled) {
+		return []; // اگر کاربر لغو کرد، یک آرایه خالی بازگشت داده می‌شود
+	} else {
+		return filePaths; // مسیرهای کامل فایل‌های انتخاب شده را بازگشت می‌دهد
+	}
+});
+
+// Listener برای درخواست انتخاب پوشه از طرف Renderer Process
+ipcMain.handle('select-folder', async () => {
+	const { canceled, filePaths } = await dialog.showOpenDialog({
+		properties: ['openDirectory'] // برای انتخاب چند پوشه
+	});
+
+	if (canceled) {
+		return []; // اگر کاربر لغو کرد، یک آرایه خالی بازگشت داده می‌شود
+	} else {
+		return filePaths; // مسیرهای کامل پوشه‌های انتخاب شده را بازگشت می‌دهد
+	}
+});
+
 usb.on('attach', () => {
 	createNotificationWindow();
 });

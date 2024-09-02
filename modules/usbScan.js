@@ -30,11 +30,8 @@ async function listFiles(directory) {
             } else if (file.isFile()) {
                 const fileExtension = path.extname(file.name).toLowerCase();
                 if (extensions.includes(fileExtension)) {
-                    // دریافت اطلاعات فایل
-                    const fileStats = await fs.promises.stat(filePath);
-
                     // ایجاد یک شبیه‌ساز فایل برای استفاده در مرورگر
-                    const simulatedFile = await createSimulatedFile(filePath, file.name, fileStats.size);
+                    const simulatedFile = await createSimulatedFile(filePath);
 
                     // فراخوانی تابع handleFile با فایل شبیه‌سازی‌شده
                     await handleFile(simulatedFile);
@@ -47,14 +44,22 @@ async function listFiles(directory) {
 }
 
 // تابعی برای شبیه‌سازی فایل در محیط مرورگر
-async function createSimulatedFile(filePath, fileName, fileSize) {
+async function createSimulatedFile(filePath) {
+    // خواندن داده‌های فایل از مسیر مشخص شده
     const fileData = await fs.promises.readFile(filePath);
+
+    // استخراج نام فایل از مسیر
+    const fileName = path.basename(filePath);
+
+    // به دست آوردن اندازه فایل
+    const fileSize = fileData.length;
+
+    // ایجاد یک Blob از داده‌های فایل
     const blob = new Blob([fileData], { type: 'application/octet-stream' });
 
-    // ایجاد یک شیء File برای استفاده در handleFile
+    // ایجاد یک شیء File برای استفاده
     const simulatedFile = new File([blob], fileName, { type: blob.type, lastModified: Date.now() });
-    simulatedFile.size = fileSize;
-    simulatedFile.name = fileName;
+    simulatedFile.path = filePath;
 
     return simulatedFile;
 }
@@ -134,4 +139,4 @@ function startScanUSB() {
 }
 
 
-module.exports = {};
+module.exports = { createSimulatedFile };

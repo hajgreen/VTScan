@@ -20,7 +20,7 @@ async function checkFileHash(hash, fileName, fileSection, file = undefined, file
 
     ShowLoading(true);
 
-    const apiKey = await getApiKey();;
+    const apiKey = await getApiKey();
     const url = "https://www.virustotal.com/api/v3/files/" + hash;
 
     try {
