@@ -11,6 +11,7 @@ function truncateString(str, num) {
 }
 
 function displayResults(attributes, fileName, fileSection, file = undefined, hash, filePath) {
+    const newFilePath = file.path || filePath;
 
     const { last_analysis_stats, last_analysis_results } = attributes;
     const totalAVs = last_analysis_stats.harmless + last_analysis_stats.malicious + last_analysis_stats.suspicious + last_analysis_stats.undetected + last_analysis_stats.timeout;
@@ -24,9 +25,9 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
     fileSection.appendChild(mainData);
 
     mainData.innerHTML += `
-        <div class="engines" style="background-color: ${maliciousAVs > 1 ? "#f44336cc" : "#00aa00b0"};">
+        <div class="engines" style="background-color: ${maliciousAVs > 4 ? "#f44336cc" : "#00aa00b0"};">
             <div class="circle">
-                <div class="positives" style="color: ${maliciousAVs > 1 ? "#f44336cc" : "#00aa00b0"};">
+                <div class="positives" style="color: ${maliciousAVs > 4 ? "#f44336cc" : "#00aa00b0"};">
                     ${maliciousAVs}
                 </div> 
                 <div class="total">
@@ -39,12 +40,12 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
     mainData.appendChild(mainInfo);
 
     // نمایش اطلاعات کلی
-    mainInfo.innerHTML += `<p>File Hash (SHA-256): ${truncateString(hash, 24)}</p>`;
+    // mainInfo.innerHTML += `<p>File Hash (SHA-256): ${truncateString(hash, 24)}</p>`;
     mainInfo.innerHTML += `<p>File Name: <strong>${truncateString(fileName, 36)}</strong></p>`;
     mainInfo.innerHTML += `<p>Last Analysis Date: <strong>${timeAgo(attributes.last_analysis_date)}</strong></p>`;
     mainInfo.innerHTML += `<p>File Size: <strong>${(file.size / 1024 / 1024).toFixed(2)} MB</strong></p>`;
-    if (file.path || filePath) {
-        mainInfo.innerHTML += `<p>Folder Path: <strong>${truncateString((file.path || filePath).replace(fileName, ""), 50)}</strong></p>`;
+    if (newFilePath) {
+        mainInfo.innerHTML += `<p>Folder Path: <strong>${truncateString(newFilePath.replace(fileName, ""), 50)}</strong></p>`;
     }
     mainInfo.innerHTML += `
     <button class="btn-rescanFile" type="button" onclick="rescanFile('${hash}'); this.disabled=true;">
@@ -53,6 +54,13 @@ function displayResults(attributes, fileName, fileSection, file = undefined, has
             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
         </svg>
         Rescan this file
+    </button>`;
+    mainInfo.innerHTML += `
+    <button class="btn-deleteFile" type="button" onclick="deleteFile(&quot;${newFilePath.replaceAll("\\", "\\\\")}&quot;); this.disabled=true;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+             <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+        </svg>
+        Delete this file
     </button>`;
 
     // ایجاد آکاردیون برای نتایج دقیق آنتی ویروس‌ها

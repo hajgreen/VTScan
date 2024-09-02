@@ -1,5 +1,5 @@
 const resultsContainer = document.getElementById('results');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const { ipcRenderer } = require('electron');
 
@@ -75,7 +75,7 @@ async function handleFolderContextMenu(folderPath) {
 }
 
 
-async function handleFileContextMenu({ fileName, fileSize, fileData, filePath }, fileCount) {
+async function handleFileContextMenu({ fileName, fileSize, fileData, filePath }) {
 
     if ((performance.now() - nowTime) > 3000) {
         resultsContainer.innerHTML = "";
@@ -123,6 +123,27 @@ async function handleFileContextMenu({ fileName, fileSize, fileData, filePath },
 
 // 
 
+async function deleteFile(filePath) {
+
+    try {
+        // بررسی وجود فایل
+        await fs.access(filePath); // این خط بررسی می‌کند که آیا فایل وجود دارد
+
+        // حذف فایل
+        await fs.unlink(filePath);
+        console.log(`File at ${filePath} has been deleted successfully.`);
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.error(`File not found: ${filePath}`);
+        } else if (error.code === 'EACCES' || error.code === 'EPERM') {
+            console.error(`Permission denied: Unable to delete file at ${filePath}`);
+        } else {
+            console.error(`An error occurred while deleting the file: ${error.message}`);
+        }
+    }
+
+}
+
 async function handleFile(file) {
 
     const maxFileSize = 650 * 1024 * 1024;
@@ -159,4 +180,4 @@ async function handleFile(file) {
     reader.readAsArrayBuffer(file);
 }
 
-module.exports = { handleFile, handleMultipleFiles };
+module.exports = { handleFile, handleMultipleFiles, deleteFile };

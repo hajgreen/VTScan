@@ -81,6 +81,14 @@ body {
   color: rgb(215, 215, 215) !important;
 }
 
+.btn-deleteFile {
+  background-color: rgb(255, 69, 69);
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
 div {
   color: rgb(33, 33, 33);
 }
