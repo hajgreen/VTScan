@@ -143,7 +143,51 @@ async function handleFileContextMenu({ fileName, fileSize, fileData, filePath })
 
 // 
 
-async function deleteFile(filePath) {
+function getXPath(element) {
+    if (element.id !== '') {
+        // اگر عنصر دارای شناسه باشد، XPath با استفاده از آن شناسه ساخته می‌شود
+        return 'id("' + element.id + '")';
+    }
+    if (element === document.body) {
+        // اگر عنصر بدنه سند باشد
+        return element.tagName.toLowerCase();
+    }
+
+    let ix = 0;
+    const siblings = element.parentNode.childNodes;
+
+    // محاسبه شماره عنصر در بین عناصر هم‌سطح
+    for (let i = 0; i < siblings.length; i++) {
+        const sibling = siblings[i];
+        if (sibling === element) {
+            return getXPath(element.parentNode) + '/' + element.tagName.toLowerCase() + '[' + (ix + 1) + ']';
+        }
+        if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {
+            ix++;
+        }
+    }
+}
+
+function deleteElementByXPath(xpath) {
+    const result = document.evaluate(
+        xpath,
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+    );
+
+    const element = result.singleNodeValue; // عنصر پیدا شده را دریافت می‌کند
+    if (element) {
+        element.parentNode.removeChild(element); // حذف عنصر از DOM
+        console.log("Element deleted:", xpath);
+    } else {
+        console.log("Element not found:", xpath);
+    }
+}
+
+
+async function deleteFile(filePath, event) {
 
     new Snackbar(`Do you want to <b>delete</b> this file?`, {
         position: 'top-center',
@@ -195,14 +239,31 @@ async function deleteFile(filePath) {
                     }
                 });
 
-            } catch (error) {
-                if (error.code === 'ENOENT') {
-                    console.error(`File not found: ${filePath}`);
-                } else if (error.code === 'EACCES' || error.code === 'EPERM') {
-                    console.error(`Permission denied: Unable to delete file at ${filePath}`);
-                } else {
-                    console.error(`An error occurred while deleting the file: ${error.message}`);
-                }
+                const newXPath = getXPath(event).slice(0, 20);
+                deleteElementByXPath(newXPath);
+
+            }
+            catch (error) {
+
+                new Snackbar(`Error for delete this file!`, {
+                    position: 'top-center',
+                    actionText: 'Ok',
+                    style: {
+                        container: [
+                            ['background-color', 'red'],
+                            ['border-radius', '5px']
+                        ],
+                        message: [
+                            ['color', '#fff'],
+                        ],
+                        bold: [
+                            ['font-weight', 'bold'],
+                        ],
+                        actionButton: [
+                            ['color', 'white'],
+                        ],
+                    }
+                });
             }
         })
     );
