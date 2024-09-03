@@ -183,37 +183,22 @@ function deleteElementByXPath(xpath) {
     }
 }
 
+var delCount = 0;
 
-async function deleteFile(filePath, event) {
+async function deleteFile(filePath, event, fileName) {
 
     const newXPath = getXPath(event).slice(0, 20);
 
-    new Snackbar(`Do you want to <b>delete</b> this file?`, {
+    if (document.getElementsByClassName("snackbar")[0]) {
+        document.getElementsByClassName("snackbar")[0].remove();
+    }
+
+    new Snackbar(`Delete <b>'${fileName}' ?</b>`, {
         position: 'top-center',
         actionText: 'Yes, Delete',
-        timeout: 15000,
-        style: {
-            container: [
-                ['background-color', '#424242'],
-                ['border-radius', '5px'],
-                ['box-shadow', '0 0 10px rgba(0, 0, 0, 0.5)']
-            ],
-            message: [
-                ['color', '#fff'],
-            ],
-            bold: [
-                ['font-weight', '800'],
-            ],
-            actionButton: [
-                ['color', '#fff'],
-                ['background-color', 'red'],
-                ['border-radius', '5px'],
-                ['padding', '8px 12px']
-            ],
-        }
-    }).setActionCallback(
+        timeout: 10000,
+        onAction: async () => {
 
-        document.getElementsByClassName("actionButton")[parseInt(newXPath.slice(18, 19)) - 1].addEventListener('click', async () => {
             try {
                 // بررسی وجود فایل
                 await fs.access(filePath); // این خط بررسی می‌کند که آیا فایل وجود دارد
@@ -250,9 +235,29 @@ async function deleteFile(filePath, event) {
                     }
                 });
             }
-        })
-    );
 
+        },
+        style: {
+            container: [
+                ['background-color', '#363636'],
+                ['border-radius', '5px'],
+                ['box-shadow', '0 0 10px rgba(0, 0, 0, 0.6)'],
+                ['width', 'max-context']
+            ],
+            message: [
+                ['color', '#fff'],
+            ],
+            bold: [
+                ['font-weight', '800'],
+            ],
+            actionButton: [
+                ['color', '#fff'],
+                ['background-color', 'red'],
+                ['border-radius', '5px'],
+                ['padding', '8px 12px']
+            ],
+        }
+    });
 }
 
 async function handleFile(file) {
