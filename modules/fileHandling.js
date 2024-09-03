@@ -192,20 +192,24 @@ async function deleteFile(filePath, event) {
     new Snackbar(`Do you want to <b>delete</b> this file?`, {
         position: 'top-center',
         actionText: 'Yes, Delete',
-        timeout: 20000,
+        timeout: 15000,
         style: {
             container: [
-                ['background-color', '#fff'],
-                ['border-radius', '5px']
+                ['background-color', '#424242'],
+                ['border-radius', '5px'],
+                ['box-shadow', '0 0 10px rgba(0, 0, 0, 0.5)']
             ],
             message: [
-                ['color', '#212121'],
+                ['color', '#fff'],
             ],
             bold: [
                 ['font-weight', '800'],
             ],
             actionButton: [
-                ['color', 'red'],
+                ['color', '#fff'],
+                ['background-color', 'red'],
+                ['border-radius', '5px'],
+                ['padding', '8px 12px']
             ],
         }
     }).setActionCallback(
