@@ -180,14 +180,13 @@ function deleteElementByXPath(xpath) {
     const element = result.singleNodeValue; // عنصر پیدا شده را دریافت می‌کند
     if (element) {
         element.parentNode.removeChild(element); // حذف عنصر از DOM
-        console.log("Element deleted:", xpath);
-    } else {
-        console.log("Element not found:", xpath);
     }
 }
 
 
 async function deleteFile(filePath, event) {
+
+    const newXPath = getXPath(event).slice(0, 20);
 
     new Snackbar(`Do you want to <b>delete</b> this file?`, {
         position: 'top-center',
@@ -214,8 +213,7 @@ async function deleteFile(filePath, event) {
         }
     }).setActionCallback(
 
-        document.getElementsByClassName("actionButton")[0].addEventListener('click', async () => {
-
+        document.getElementsByClassName("actionButton")[parseInt(newXPath.slice(18, 19)) - 1].addEventListener('click', async () => {
             try {
                 // بررسی وجود فایل
                 await fs.access(filePath); // این خط بررسی می‌کند که آیا فایل وجود دارد
@@ -223,28 +221,11 @@ async function deleteFile(filePath, event) {
                 // حذف فایل
                 await fs.unlink(filePath);
 
-                new Snackbar(`Delete this file Successfully!`, {
-                    position: 'top-center',
-                    actionText: 'Ok',
-                    style: {
-                        container: [
-                            ['background-color', 'green'],
-                            ['border-radius', '5px']
-                        ],
-                        message: [
-                            ['color', '#eee'],
-                        ],
-                        bold: [
-                            ['font-weight', 'bold'],
-                        ],
-                        actionButton: [
-                            ['color', 'white'],
-                        ],
-                    }
-                });
 
-                const newXPath = getXPath(event).slice(0, 20);
                 deleteElementByXPath(newXPath);
+
+                var counterResult = document.getElementById("file-counter-result").innerText[1];
+                document.getElementById("file-counter-result").innerText = `(${parseInt(counterResult) - 1})`;
 
             }
             catch (error) {
