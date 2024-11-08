@@ -1,5 +1,5 @@
 const resultsContainer = document.getElementById('results');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 const { Snackbar } = require('../data/js/snackbar.js');
 const { ipcRenderer } = require('electron');
@@ -52,27 +52,38 @@ async function handleFolderContextMenu(folderPath) {
 
     for (const file of files) {
         const filePath = path.join(folderPath, file);
+
         const fileStats = fs.statSync(filePath);
 
         if (fileStats.isFile()) {
-            // خواندن محتوای فایل به عنوان یک Buffer
-            const fileData = fs.readFileSync(filePath);
 
-            // ایجاد یک Blob از داده‌های فایل
-            const blob = new Blob([fileData]);
+            if (checkSize(filePath)) {
 
-            // ایجاد یک شیء File معتبر از Web API
-            const fileObject = new File([blob], path.basename(filePath), {
-                type: '', // MIME type می‌تواند اضافه شود اگر نیاز بود
-                lastModified: fileStats.mtimeMs,
-            });
+                // خواندن محتوای فایل به عنوان یک Buffer
+                const fileData = fs.readFileSync(filePath);
 
-            // فراخوانی تابع handleFile برای پردازش فایل
-            await handleFile(fileObject);
-        } else if (fileStats.isDirectory()) {
+                // ایجاد یک Blob از داده‌های فایل
+                const blob = new Blob([fileData]);
+
+                // ایجاد یک شیء File معتبر از Web API
+                const fileObject = new File([blob], path.basename(filePath), {
+                    type: '', // MIME type می‌تواند اضافه شود اگر نیاز بود
+                    lastModified: fileStats.mtimeMs,
+                });
+
+                // فراخوانی تابع handleFile برای پردازش فایل
+                await handleFile(fileObject);
+
+            }
+
+        }
+        else if (fileStats.isDirectory()) {
             // handleFolderContextMenu(filePath);
         }
+
     }
+
+    ShowLoading(false);
 }
 
 

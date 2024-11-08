@@ -83,8 +83,12 @@ fileSelectButton.addEventListener('click', async () => {
     const filePaths = await ipcRenderer.invoke('select-files');
 
     filePaths.map(async (item) => {
-        const file = await createSimulatedFile(item);
-        handleFile(file);
+
+        if (checkSize(item)) {
+            const file = await createSimulatedFile(item);
+            handleFile(file);
+        }
+
     })
 });
 

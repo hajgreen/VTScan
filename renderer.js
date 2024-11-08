@@ -8,6 +8,7 @@ const { displayResults, displayStreamingResults } = require('./modules/displayRe
 const { searchFiles, orderBy } = require('./modules/search');
 const { openSettings } = require('./modules/pageRoute');
 const { createSimulatedFile } = require('./modules/usbScan');
+const { checkSize } = require('./modules/func');
 require('./modules/contextMenu');
 require('./modules/events');
 

@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const Store = require('electron-store');
 const { usb } = require('usb');
+const { checkSize } = require('./modules/func');
 
 require('dotenv').config();
 const store = new Store();
@@ -80,7 +81,18 @@ function createWindow() {
 
 			if (arrFiles.length > 0) {
 				for (let i = 0; i < arrFiles.length; i++) {
-					await win.webContents.send('handle-file', { pathFile: PathToFile(arrFiles[i]), fileCount: arrFiles.length });
+
+					if (checkSize(arrFiles[i])) {
+						await win.webContents.send('handle-file', { pathFile: PathToFile(arrFiles[i]), fileCount: arrFiles.length });
+					}
+					else {
+						dialog.showMessageBox({
+							type: 'error',
+							title: 'File size',
+							message: "File size exceeds the 650 MB limit.",
+							buttons: ['OK']
+						});
+					}
 				}
 			}
 
@@ -210,10 +222,32 @@ app.whenReady().then(() => {
 				const filePath = commandLine[1].slice(7);
 
 				if (arrEnable) {
-					arrFiles.push(filePath);
+					if (checkSize(filePath)) {
+						arrFiles.push(filePath);
+					}
+					else {
+						dialog.showMessageBox({
+							type: 'error',
+							title: 'File size',
+							message: "File size exceeds the 650 MB limit.",
+							buttons: ['OK']
+						});
+					}
+
 				}
 				else {
-					await win.webContents.send('handle-file', { pathFile: PathToFile(filePath), fileCount: 0 });
+
+					if (checkSize(filePath)) {
+						await win.webContents.send('handle-file', { pathFile: PathToFile(filePath), fileCount: 0 });
+					}
+					else {
+						dialog.showMessageBox({
+							type: 'error',
+							title: 'File size',
+							message: "File size exceeds the 650 MB limit.",
+							buttons: ['OK']
+						});
+					}
 				}
 			}
 			else if (folderArgIndex == "--folder=") {
