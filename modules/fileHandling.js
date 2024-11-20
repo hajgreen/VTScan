@@ -211,20 +211,38 @@ async function deleteFile(filePath, event, fileName) {
         onAction: async () => {
 
             try {
-                // بررسی وجود فایل
-                await fs.access(filePath); // این خط بررسی می‌کند که آیا فایل وجود دارد
 
-                // حذف فایل
-                await fs.unlink(filePath);
-
+                fs.unlinkSync(filePath);
 
                 deleteElementByXPath(newXPath);
 
                 var counterResult = document.getElementById("file-counter-result").innerText[1];
                 document.getElementById("file-counter-result").innerText = `(${parseInt(counterResult) - 1})`;
 
+                new Snackbar(`delete this file successfully!`, {
+                    position: 'top-center',
+                    actionText: 'Ok',
+                    style: {
+                        container: [
+                            ['background-color', 'green'],
+                            ['border-radius', '5px']
+                        ],
+                        message: [
+                            ['color', '#fff'],
+                        ],
+                        bold: [
+                            ['font-weight', 'bold'],
+                        ],
+                        actionButton: [
+                            ['color', 'white'],
+                        ],
+                    }
+                });
+
             }
             catch (error) {
+
+                console.error(error)
 
                 new Snackbar(`Error for delete this file!`, {
                     position: 'top-center',
