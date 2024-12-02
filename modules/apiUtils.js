@@ -114,7 +114,7 @@ async function pollScanResults(scanId, fileName, fileSection) {
             fileSection.innerHTML += `<p>Network or fetch error: ${error.message}</p>`;
             clearInterval(intervalId);
         }
-    }, 2000); // چک کردن هر 5 ثانیه
+    }, 2000); // check in 2 seconds
 }
 
 async function uploadFile(file, fileSection) {
@@ -169,7 +169,6 @@ async function uploadFile(file, fileSection) {
         }
     };
 
-    // ارسال درخواست
     xhr.send(formData);
 }
 

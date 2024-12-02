@@ -386,9 +386,9 @@ ipcMain.handle('select-folder', async () => {
 	});
 
 	if (canceled) {
-		return []; // اگر کاربر لغو کرد، یک آرایه خالی بازگشت داده می‌شود
+		return [];
 	} else {
-		return filePaths; // مسیرهای کامل پوشه‌های انتخاب شده را بازگشت می‌دهد
+		return filePaths;
 	}
 });
 
