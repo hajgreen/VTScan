@@ -373,9 +373,9 @@ ipcMain.handle('select-files', async () => {
 	});
 
 	if (canceled) {
-		return []; // اگر کاربر لغو کرد، یک آرایه خالی بازگشت داده می‌شود
+		return []
 	} else {
-		return filePaths; // مسیرهای کامل فایل‌های انتخاب شده را بازگشت می‌دهد
+		return filePaths;
 	}
 });
 
